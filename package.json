@@ -27,6 +27,7 @@
     "pg": "^6.1.5",
     "ramda": "^0.23.0",
     "request": "^2.81.0",
-    "request-promise": "^4.2.0"
+    "request-promise": "^4.2.0",
+    "twitter": "^1.7.0"
   }
 }
