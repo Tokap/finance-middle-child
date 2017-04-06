@@ -1,7 +1,8 @@
 'use strict';
 
-const R       = require('ramda')
-const Request = require('request-promise');
+const Awesomize = require('awesomize');
+const R         = require('ramda');
+const Request   = require('request-promise');
 
 const MYSQL_GET_ONE = process.env.MYSQL_GET_ONE;
 

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/Tokap/js-middle-child#readme",
   "dependencies": {
+    "awesomize": "^0.1.14",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "dotenv": "^4.0.0",
