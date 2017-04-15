@@ -2,5 +2,5 @@
 #    DEVELOPMENT
 # ----------------
 
-get-quote:
-	node ./src/main.js
+server:
+	node ./src/server/index.js

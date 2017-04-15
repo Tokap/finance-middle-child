@@ -1,11 +1,12 @@
 'use strict';
 
-const express            = require('express')
-const bodyParser         = require('body-parser');
-const app                = express();
-const dotenv             = require('dotenv').config();
+const express       = require('express');
+const bodyParser    = require('body-parser');
+const app           = express();
+const dotenv        = require('dotenv').config();
+const { getQuote }  = require('../stock-tickets/index.js');
 
-const PORT = 47700;
+const PORT = 3300;
 
 // -------------------------------------------------------------
 // -------- The Server
@@ -17,8 +18,14 @@ app.get('/sys/alive', (req, res) => {
   res.send({ status: "More work? Zug zug." });
 })
 
+app.get('/quote/:symbol', (req, res) => {
+  let symbol = req.params.symbol;
+  getQuote(symbol)
+  .then( (quote_details) => res.send(quote_details) )
+})
+
 const startServer = () => {
-  console.log(`Sys Alive Listening on Port: ${PORT}`);
+  console.log(`Listening on Port: ${PORT}`);
   app.listen(PORT);
 }
 
