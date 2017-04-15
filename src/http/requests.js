@@ -17,11 +17,7 @@ const httpsRequest = R.curry( (url, method, body) => {
   };
 
   return Request(options)
-  .then(  (res) => {
-    console.log("REZ: ", res)
-    return res
-  } )
-  // .then(  (res) => console.log("RESPONSE_ : ", res) )
+  .then(  (res) => { return res } )
   .catch( (err) => console.error(err) )
 
 })
