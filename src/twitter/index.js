@@ -1,10 +1,9 @@
-require('dotenv').config();
+'use strict';
 
 const Twitter = require('twitter');
-
 const STATUS_TIMELINE = 'statuses/user_timeline';
 
-
+require('dotenv').config();
 
 // make_twitter_client :: TwitterClient
 const makeTwitterClient = () =>
@@ -19,18 +18,12 @@ const makeTwitterClient = () =>
 const makeParams = (screen_name, user_id, post_count) => {
   return {
     screen_name : screen_name
-  // , user_id     : user_id
+  , user_id     : user_id
   , count       : post_count
   }
 }
 
-// let my_params = makeParams('AndreVasilescu', 613, 1);
-// let my_client = makeTwitterClient();
-//
-// my_client.get(STATUS_TIMELINE, my_params)
-//   .then( (tweets) => {
-//     console.log(tweets);
-//   })
-//   .catch( (error) => {
-//     console.log(error);
-//   })
+module.exports = {
+  makeTwitterClient : makeTwitterClient
+, makeParams        : makeParams
+}

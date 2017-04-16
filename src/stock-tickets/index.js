@@ -1,3 +1,5 @@
+'use strict';
+
 const AddressBook       = require('../http/address-book.js');
 const { httpsRequest }  = require('../http/requests.js');
 
