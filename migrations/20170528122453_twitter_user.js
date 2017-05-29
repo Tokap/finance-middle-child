@@ -12,10 +12,10 @@ exports.up = (knex, Bluebird) => {
     table.integer('network_id');
     table.integer('followers_count');
     table.integer('friends_count');
-    table.integer('account_created_at');
-    table.integer('profile_image_url');
+    table.timestamp('account_created_at');
+    table.string('profile_image_url');
     table.boolean('verified');
-    table.timestamps();
+    table.timestamps(true,true);
     table.boolean('deleted');
     table.timestamp('deleted_at');
   })

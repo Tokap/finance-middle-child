@@ -1,5 +1,5 @@
 // type alias TweetQueryReturn =
-// { created_at: 'Sat May 20 22:16:42 +0000 2017'
+// { created_at: String
 // , id : Number
 // , id_str : String
 // , text : String
@@ -29,7 +29,7 @@
 // type alias TwitterUser =
 // { id : Number
 // , id_str : String
-// , name : String ( Ex - 'Andrei Vasilescu' )
+// , name : String ( Ex - 'Jane Smith' )
 // , screen_name : String
 // , location : String ( Ex - 'New York, USA' )
 // , description : String

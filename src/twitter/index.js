@@ -8,7 +8,7 @@ const STATUS_TIMELINE = 'statuses/user_timeline';
 require('dotenv').config();
 
 // make_twitter_client :: TwitterClient
-const makeTwitterClient = () =>
+const makeClient = () =>
   new Twitter({
     consumer_key        : process.env.TWITTER_CONSUMER_API_KEY
   , consumer_secret     : process.env.TWITTER_CONSUMER_API_SECRET
@@ -60,29 +60,15 @@ const _makeProfileInsert = R.applySpec({
 // _getInsertFromProfile :: TwitterResponse -> InsertParameters
 const _getInsertFromProfile = R.compose(_makeProfileInsert, _getUserProfile)
 
-// :: String -> TwitterClient -> InsertParameters
-const getUserDetails = R.curry( (screen_name, client) => {
+// getUserDetails :: String -> TwitterClient -> InsertParameters
+const getUserDetails = R.curry( (client, screen_name) => {
   let params = makeParams(screen_name, 1)
   return client.get(STATUS_TIMELINE, params)
   .then( _getInsertFromProfile )
-  .then(console.log)
 })
 
-// Example Use of Twitter API Interaction:
-let my_params = makeParams('AndreVasilescu', 1);
-let my_client = makeTwitterClient();
-
-my_client.get(STATUS_TIMELINE, my_params)
-  .then( (tweets) => {
-    console.log(tweets);
-  })
-  .catch( (error) => {
-    console.log(error);
-  })
-
-// getUserDetails('AndreVasilescu', my_client)
-
-// module.exports = {
-//   makeTwitterClient : makeTwitterClient
-// , makeParams        : makeParams
-// }
+module.exports = {
+  getUserDetails : getUserDetails
+, makeParams     : makeParams
+, makeClient     : makeClient
+}

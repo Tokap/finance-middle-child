@@ -1,3 +1,5 @@
+'use strict'
+
 const TWITTER_USERS = [
   'kitjuckes'
 , 'BondVigilantes'
@@ -14,7 +16,6 @@ const TWITTER_USERS = [
 , 'davidjpowell24'
 , 'TheSkeptic21'
 , 'howardlindzon'
-, 'EnisTaner'
 , 'conorsen'
 , 'allstarcharts'
 , 'RiskReversal'
@@ -47,7 +48,6 @@ const TWITTER_USERS = [
 , 'cbk_chi'
 , 'retheauditors'
 , 'D_Blanchflower'
-, 'spbaines'
 , 'zerohedge'
 , 'NicTrades'
 , 'firoozye'
@@ -63,14 +63,12 @@ const TWITTER_USERS = [
 , 'hsilverb'
 , 'valuewalk'
 , 'pauldiggle'
-, 'TradeDesk_Steve'
 , 'MorganStanley'
-, 'DanBTIG'
 , 'toby_n'
 , 'IanShepherdson'
 , 'ianbremmer'
 ]
 
-module.exports {
+module.exports = {
   TWITTER_USERS
 }

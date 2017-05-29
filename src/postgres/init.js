@@ -1,9 +1,8 @@
 require('dotenv').config();
 
-const Postgres = require('pg-promise')();
-const knex = require('knex')
+const Knex = require('knex');
 
-const conn = {
+const _conn = {
   host: process.env.POSTGRES_HOST
 , port: process.env.POSTGRES_PORT
 , database: process.env.POSTGRES_MAIN_DB
@@ -11,30 +10,16 @@ const conn = {
 , password: process.env.POSTGRES_PW
 };
 
-const db = Postgres(conn);
 
-// return db.one('SELECT * FROM test_table')
-// .then( (rez) => console.log('Hey! An Outcome!', rez))
-// .catch((e) => console.log('Error During DB Conn: ', e))
-
-
-// The below also works
-const knexConfig = {
+const _knexConfig = {
   client: 'pg'
 , version: 9.6
-, connection: conn
-}
+, connection: _conn
+};
 
-const knexDbConn = knex(knexConfig)
+const knex = Knex(_knexConfig);
 
 // knexDbConn.select('name').from('test_table')
 // .then( (rez) => console.log(rez[0].name))
 
-knexDbConn.schema.createTableIfNotExists('twitter_post', (table) => {
-  table.increments('id');
-  table.string('username');
-  table.string('post');
-  table.string('mood');
-  table.timestamps();
-})
-.then(console.log('A thing!'))
+module.exports = knex
