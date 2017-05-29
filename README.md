@@ -1,6 +1,8 @@
 # js-middle-child
-A middle child in a greater architecture
+Capturing Finance Hints Through Social Media
 
 Getting Started:
 
-- Install Postgres through brew: `brew install postgres`
+- Install Postgres through Brew: `brew install postgres`
+- Start Postgres with `brew services start postgres`
+- Setup Database with `make full-install`
