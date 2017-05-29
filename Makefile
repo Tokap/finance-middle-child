@@ -33,4 +33,4 @@ seed:
 get-posts:
 	node ./src/get_posts.js
 
-full-install: install create-db migrate-latest seed
+full-install: install create-db migrate-latest seed get-posts

@@ -92,11 +92,6 @@ const getRecentTweets = R.curry( (client, screen_name) => {
 })
 
 
-
-
-
-
-
 module.exports = {
   getRecentTweets : getRecentTweets
 , getUserDetails  : getUserDetails

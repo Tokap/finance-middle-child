@@ -13,7 +13,7 @@ exports.up = (knex, Bluebird) => {
     table.string('re_username');
     table.timestamp('posted_at');
     table.timestamps(true,true);
-    table.boolean('deleted');
+    table.boolean('deleted').defaultTo(false);
     table.timestamp('deleted_at');
   })
 };

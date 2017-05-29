@@ -15,7 +15,7 @@ exports.up = (knex, Bluebird) => {
     table.string('profile_image_url');
     table.boolean('verified');
     table.timestamps(true,true);
-    table.boolean('deleted');
+    table.boolean('deleted').defaultTo(false);
     table.timestamp('deleted_at');
   })
 };
