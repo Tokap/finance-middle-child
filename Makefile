@@ -30,4 +30,7 @@ migrate-down:
 seed:
 	node ./src/seed.js
 
+get-posts:
+	node ./src/get_posts.js
+
 full-install: install create-db migrate-latest seed

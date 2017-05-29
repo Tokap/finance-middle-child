@@ -13,8 +13,8 @@ const TwitterSeed = require('./twitter/user_seed.js')
 const CLIENT  = Twitter.makeClient()
 const MAX_CONCURRENCY = { concurrency: 3 }
 
-// seed_twitter_users :: I/O
-const seed_twitter_users = () => {
+// seedTwitterUsers :: I/O
+const seedTwitterUsers = () => {
   console.log('Retrieving Twitter User Information and Saving to DB.')
 
   return Bluebird.map(
@@ -30,4 +30,4 @@ const seed_twitter_users = () => {
   .catch((e) => console.log('Something went wrong during seed:', e))
 }
 
-seed_twitter_users()
+seedTwitterUsers()

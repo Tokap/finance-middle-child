@@ -3,7 +3,7 @@ Bluebird = require('bluebird')
 exports.up = (knex, Bluebird) => {
   return knex.schema.createTableIfNotExists('twitter_user', (table) => {
     table.increments('id');
-    table.integer('network_id');
+    table.bigInteger('network_id');
     table.string('username');
     table.string('first_name');
     table.string('last_name');

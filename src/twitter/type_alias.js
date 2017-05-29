@@ -70,7 +70,7 @@
 // , translator_type : String ( Ex - 'none' )
 // }
 
-// type alias InsertParameters =
+// type alias ProfileInsert =
 // { username : String
 // , network_id : Number
 // , first_name : String

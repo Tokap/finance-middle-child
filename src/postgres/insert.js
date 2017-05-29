@@ -7,6 +7,11 @@ const saveUserDetails = R.curry( (knex, params) =>
   knex.insert(params, 'id').into(Tables.twitter_user)
 )
 
+const savePostDetails = R.curry( (knex, params) =>
+  knex.insert(params, 'id').into(Tables.twitter_post)
+)
+
 module.exports = {
   saveUserDetails
+, savePostDetails
 }
