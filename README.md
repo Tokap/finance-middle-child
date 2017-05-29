@@ -9,4 +9,6 @@ Getting Started:
 
 After these steps are completed you will have a database populated with
 top finance figures on Twitter (as suggested by Business Insider) and 150 recent
-posts from each. 
+posts from each.
+
+As the project expands, this information will be accessible via API interactions.
