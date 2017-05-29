@@ -23,3 +23,10 @@ const _tap = (x) => {
   console.log('Here is your output: ', x)
   return x
 }
+
+// Might Resolve Browser Origin Issues:
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+// });

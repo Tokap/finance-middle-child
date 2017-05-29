@@ -72,6 +72,7 @@ const getUserDetails = R.curry( (client, screen_name) => {
 // _isReply :: TwitterReturn -> Bool
 const _isReply = R.compose(R.not, R.isNil, R.prop('in_reply_to_user_id'))
 
+// @TODO - add process to handle entities: hashtags,symbols,user_mentions, urls
 // _makeTwitterPostInsert :: TwitterReturn -> ProfileInsert
 const _makeTwitterPostInsert = R.applySpec({
   post_id            : R.propOr(null, 'id')
@@ -81,7 +82,6 @@ const _makeTwitterPostInsert = R.applySpec({
 , re_status_id       : R.propOr(null, 'in_reply_to_status_id')
 , re_network_user_id : R.propOr(null, 'in_reply_to_user_id')
 , re_username        : R.propOr(null, 'in_reply_to_screen_name')
-// , entities        : R.propOr(null, 'entities') hashtags,symbols,user_mentions, urls
 })
 
 // getRecentTweets :: TwitterClient -> String -> PostInsert
