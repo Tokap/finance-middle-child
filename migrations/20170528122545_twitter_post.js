@@ -1,6 +1,5 @@
 Bluebird = require('bluebird')
 
-
 exports.up = (knex, Bluebird) => {
   return knex.schema.createTableIfNotExists('twitter_post', (table) => {
     table.increments('id');
@@ -14,6 +13,5 @@ exports.up = (knex, Bluebird) => {
   })
 };
 
-exports.down = (knex, Bluebird) => {
-  return knex.schema.dropTable('twitter_post');
-};
+exports.down = (knex, Bluebird) =>
+  knex.schema.dropTable('twitter_post');
