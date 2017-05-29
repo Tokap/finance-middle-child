@@ -7,7 +7,7 @@ const STATUS_TIMELINE = 'statuses/user_timeline';
 
 require('dotenv').config();
 
-// make_twitter_client :: TwitterClient
+// makeClient :: TwitterClient
 const makeClient = () =>
   new Twitter({
     consumer_key        : process.env.TWITTER_CONSUMER_API_KEY
@@ -16,18 +16,13 @@ const makeClient = () =>
   , access_token_secret : process.env.TWITTER_ACCESS_TOKEN_SECRET
   });
 
-// makeParams :: String -> Int -> TwitterParams
-const makeParams = R.curry( (screen_name, post_count) => {
+// _makeParams :: String -> Int -> TwitterParams
+const _makeParams = R.curry( (screen_name, post_count) => {
   return {
     screen_name : screen_name
   , count       : post_count
   }
 })
-
-
-
-
-
 
 
 // _getUserProfile :: TweetQueryReturn -> TwitterUser
@@ -68,11 +63,10 @@ const _getInsertFromProfile = R.compose(_makeProfileInsert, _getUserProfile)
 
 // getUserDetails :: TwitterClient -> String -> ProfileInsert
 const getUserDetails = R.curry( (client, screen_name) => {
-  let params = makeParams(screen_name, 1)
+  let params = _makeParams(screen_name, 1)
   return client.get(STATUS_TIMELINE, params)
   .then( _getInsertFromProfile )
 })
-
 
 
 // _isReply :: TwitterReturn -> Bool
@@ -92,7 +86,7 @@ const _makeTwitterPostInsert = R.applySpec({
 
 // getRecentTweets :: TwitterClient -> String -> PostInsert
 const getRecentTweets = R.curry( (client, screen_name) => {
-  let params = makeParams(screen_name, 150)
+  let params = _makeParams(screen_name, 150)
   return client.get(STATUS_TIMELINE, params)
   .then( R.map(_makeTwitterPostInsert) )
 })
@@ -106,6 +100,5 @@ const getRecentTweets = R.curry( (client, screen_name) => {
 module.exports = {
   getRecentTweets : getRecentTweets
 , getUserDetails  : getUserDetails
-, makeParams      : makeParams
 , makeClient      : makeClient
 }
