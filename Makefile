@@ -27,7 +27,7 @@ migrate-up:
 migrate-down:
 	${NODE_BIN}/knex-migrate down --only $(filename)
 
-init: install create-db migrate-latest
-
 seed:
 	node ./src/seed.js
+
+full-install: install create-db migrate-latest seed

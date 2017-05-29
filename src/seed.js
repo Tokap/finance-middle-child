@@ -16,7 +16,6 @@ const MAX_CONCURRENCY = { concurrency: 3 }
 // seed_twitter_users :: I/O
 const seed_twitter_users = () => {
   console.log('Retrieving Twitter User Information and Saving to DB.')
-  console.log('TWITTER_USERS', TWITTER_USERS)
 
   return Bluebird.map(
     TwitterSeed.TWITTER_USERS

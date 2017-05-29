@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const Knex = require('knex');
 
+
 const _conn = {
   host: process.env.POSTGRES_HOST
 , port: process.env.POSTGRES_PORT
@@ -10,7 +11,6 @@ const _conn = {
 , password: process.env.POSTGRES_PW
 };
 
-
 const _knexConfig = {
   client: 'pg'
 , version: 9.6
@@ -18,8 +18,5 @@ const _knexConfig = {
 };
 
 const knex = Knex(_knexConfig);
-
-// knexDbConn.select('name').from('test_table')
-// .then( (rez) => console.log(rez[0].name))
 
 module.exports = knex
