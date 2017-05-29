@@ -4,8 +4,6 @@ const Awesomize = require('awesomize');
 const R         = require('ramda');
 const Request   = require('request-promise');
 
-const MYSQL_GET_ONE = process.env.MYSQL_GET_ONE;
-
 // httpsRequest :: String -> String -> Object -> Promise HttpReply
 const httpsRequest = R.curry( (url, method, body) => {
 
