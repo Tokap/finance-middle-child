@@ -21,6 +21,5 @@ exports.up = (knex, Bluebird) => {
   })
 };
 
-exports.down = (knex, Bluebird) => {
-  return knex.schema.dropTable('twitter_user');
-};
+exports.down = (knex, Bluebird) =>
+  knex.schema.dropTable('twitter_user');
