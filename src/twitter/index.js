@@ -3,6 +3,8 @@
 const R       = require('ramda')
 const Twitter = require('twitter');
 
+const Analysis = require('../analysis/index.js')
+
 const STATUS_TIMELINE = 'statuses/user_timeline';
 
 require('dotenv').config();
@@ -91,9 +93,8 @@ const getRecentTweets = R.curry( (client, screen_name) => {
   .then( R.map(_makeTwitterPostInsert) )
 })
 
-
 module.exports = {
-  getRecentTweets : getRecentTweets
-, getUserDetails  : getUserDetails
-, makeClient      : makeClient
+  getRecentTweets
+, getUserDetails
+, makeClient
 }

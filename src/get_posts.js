@@ -19,6 +19,7 @@ const _getRecentTweets = R.curry( (client, user_detail) => {
   let user_id = R.prop('id', user_detail)
   let username = R.prop('username', user_detail)
 
+  // return Twitter.getRecentTweets(client, username)
   return Twitter.getRecentTweets(client, username)
   .then(R.map(R.assoc('twitter_user_id', user_id)))
 })
@@ -46,7 +47,7 @@ const seedTwitterPosts = () => {
 
   getPostsForUserList(Knex, CLIENT, MAX_CONCURRENCY)
   .then( (save_ids) => {
-    console.log(`Twitter Posts Saved! ${R.length(save_ids) * 150} Rows Inserted.`)
+    console.log(`Twitter Posts Saved!`)
     process.exit(0)
   })
   .catch((e) => console.log('Something went wrong during post retreival:', e))

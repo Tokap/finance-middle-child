@@ -1,4 +1,4 @@
-Bluebird = require('bluebird')
+const Bluebird = require('bluebird')
 
 exports.up = (knex, Bluebird) => {
   return knex.schema.createTableIfNotExists('twitter_user', (table) => {
