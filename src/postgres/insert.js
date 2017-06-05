@@ -16,7 +16,7 @@ const saveStockTicketDetails = R.curry( (knex, params) =>
 )
 
 const saveStockPriceDetails = R.curry( (knex, params) =>
-  knex.insert(params, 'id').into(Tables.stock_price)
+  knex.insert(params, 'id').into(Tables.stock_pricing)
 )
 
 module.exports = {

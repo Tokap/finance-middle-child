@@ -13,6 +13,8 @@ const NYSE = 'NYSE'
 
 const STOCK_TICKET_FORMAT = /\b[A-Z]{3,4}\b/g
 
+
+const MAX_CONCURRENCY = { concurrency: 4 }
 const BLACK_LIST = [
   'USD'
 , 'GBP'
@@ -53,25 +55,6 @@ const _getStockTickets = R.match(STOCK_TICKET_FORMAT)
 // _getTicketsFromPost :: Object -> List String
 const _getTicketsFromPost = R.compose(_getStockTickets, R.prop('text'))
 
-// _validPostOrNull :: StoredTwitterPost
-const _validPostOrNull = (post) => {
-  let tickets = _getTicketsFromPost(post)
-  return Bluebird.map(tickets, validateStockTicket)
-  .then( (bools) => {
-    if (R.contains(true, bools)) {
-      return post
-    }
-    else {
-      return null
-    }
-  })
-}
-
-// validateTicketsInPosts :: List StoredTwitterPost -> List StoredTwitterPost
-const validateTicketsInPosts = (posts) =>
-  Bluebird.map(posts, _validPostOrNull)
-  .then(R.reject(R.isNil))
-
 // getStockTweetsById :: Number -> List StoredTwitterPost
 const getStockTweetsById = (user_id) =>
   Knex.select().from(Tables.twitter_post).where({twitter_user_id: user_id})
@@ -88,25 +71,6 @@ const getStockHistory = R.curry( (start_date, end_date, exchange, symbol) => {
   })
 })
 
-// getStockNews :: String -> String -> List StockInfo
-const getStockNews = (exchange, symbol) =>
-  Finance.companyNews( {symbol: `${exchange}:${symbol}`} )
-
-// _getStockInfoBySymbolList :: List String -> List StockObject
-const _getStockInfoBySymbolList = (symbol_array) =>
-  Bluebird.map(
-    symbol_array
-  , getStockHistory(HISTORY_START_DATE, HISTORY_END_DATE, NYSE)
-  )
-  .then(R.flatten)
-
-// getStockInfoByUserPost :: Number -> List (Maybe StockDetails)
-// Returns empty list if no results.
-const getStockInfoByUserPost = (user_id) =>
-  getStockTweetsById(user_id)
-  .then(R.map(_getTicketsFromPost))
-  .then( (tickets) => Bluebird.map(tickets, _getStockInfoBySymbolList) )
-
 // validateStockTicket :: String -> Bool
 const validateStockTicket = (symbol) => {
   let end = Moment().format("YYYY-MM-DD")
@@ -115,6 +79,47 @@ const validateStockTicket = (symbol) => {
   return getStockHistory(start, end, NASDAQ, symbol)
   .then(R.compose(R.not, R.isEmpty))
 }
+
+// _validPostOrNull :: StoredTwitterPost
+const _validPostOrNull = (post) => {
+  let tickets = _getTicketsFromPost(post)
+  return Bluebird.map(tickets, validateStockTicket, MAX_CONCURRENCY)
+  .then( (bools) => {
+    if (R.contains(true, bools)) {
+      return post
+    }
+    else {
+      return null
+    }
+  })
+}
+
+// validateTicketsInPosts :: List StoredTwitterPost -> List StoredTwitterPost
+const validateTicketsInPosts = (posts) =>
+  Bluebird.map(posts, _validPostOrNull)
+  .then(R.reject(R.isNil))
+
+// getStockNews :: String -> String -> List StockInfo
+const getStockNews = (exchange, symbol) =>
+  Finance.companyNews( {symbol: `${exchange}:${symbol}`} )
+
+// _getStockInfoBySymbolList :: List String -> List StockDetailsApi
+const _getStockInfoBySymbolList = (symbol_array) =>
+  Bluebird.map(
+    symbol_array
+  , getStockHistory(HISTORY_START_DATE, HISTORY_END_DATE, NYSE)
+  , MAX_CONCURRENCY
+  )
+  .then(R.flatten)
+
+// getStockInfoByUserPost :: Number -> List StockDetailsApi
+// Returns empty list if no results.
+const getStockInfoByUserPost = (user_id) =>
+  getStockTweetsById(user_id)
+  .then(R.map(_getTicketsFromPost))
+  .then( (tickets) =>
+    Bluebird.map(tickets, _getStockInfoBySymbolList, MAX_CONCURRENCY)
+  )
 
 module.exports = {
   postHasStockTicket

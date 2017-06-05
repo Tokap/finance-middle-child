@@ -3,8 +3,6 @@
 const R       = require('ramda')
 const Twitter = require('twitter');
 
-const Analysis = require('../analysis/index.js')
-
 const STATUS_TIMELINE = 'statuses/user_timeline';
 
 require('dotenv').config();
