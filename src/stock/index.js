@@ -71,7 +71,6 @@ const validateTicketsInPosts = (posts) =>
   Bluebird.map(posts, _validPostOrNull)
   .then(R.reject(R.isNil))
 
-
 // _getStockInfoBySymbolList :: List String -> List StockDetailsApi
 const _getStockInfoBySymbolList = (symbol_array) =>
   Bluebird.map(
@@ -90,10 +89,10 @@ const getStockInfoByUserPost = (user_id) =>
     Bluebird.map(tickets, _getStockInfoBySymbolList, MAX_CONCURRENCY)
   )
 
-
 // getNews :: String -> String -> List StockInfo
 const getNews = (exchange, symbol) =>
   Finance.companyNews( {symbol: `${exchange}:${symbol}`} )
+
 
 module.exports = {
   getNews

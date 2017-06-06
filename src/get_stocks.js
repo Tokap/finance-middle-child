@@ -9,10 +9,42 @@ const Knex     = require('./postgres/init.js')
 const PgInsert = require('./postgres/insert.js')
 const PgGet    = require('./postgres/get.js')
 const Stock    = require('./stock/index.js')
-const Twitter  = require('./twitter/index.js')
-const TwitterSeed = require('./twitter/user_seed.js')
+const StockSeed = require('./stock/ticket_seed.js')
 
 const MAX_CONCURRENCY = { concurrency: 4 }
+
+// _makeSymbolDetails :: Sting -> List Number -> Object
+const _makeSymbolDetails = R.curry( (symbol, save_id) => {
+  return {
+    symbol: symbol
+  , id: R.head(save_id)
+  }
+})
+
+// _makeInsertAndSave :: Knex -> String -> List Object
+const _makeInsertAndSave = R.curry( (knex, symbol) => {
+  return PgInsert.saveStockTicketDetails(knex, {symbol: symbol})
+  .then(_makeSymbolDetails(symbol))
+})
+
+const _getPriceHistory = () => {
+
+}
+
+const seedStockData = R.curry( (knex, seed_array) =>
+  Bluebird.map(seed_array, _makeInsertAndSave(knex))
+)
+
+seedStockData(Knex, StockSeed.STOCK_TICKETS)
+.then(console.log)
+
+
+
+
+
+
+
+
 
 // _getStockTicket :: StockDetailsApi -> String
 const _getStockTicket =
@@ -21,8 +53,6 @@ const _getStockTicket =
   , R.split(':')
   , R.prop('symbol')
   )
-
-// @TODO concurrency on initial save seems to cause duplicate issue
 
 // _getOrMakeTicketId :: Knex -> String -> List String -> Number
 const _getOrMakeTicketId = R.curry( (knex, symbol, maybe_array) => {
@@ -119,8 +149,8 @@ const _iterateThrough = R.curry((knex, array) =>
 //   return rez
 // })
 
-Stock.getStandardHistory('AAPL')
-.then(console.log)
+// Stock.getStandardHistory('AAPL')
+// .then(console.log)
 
 // PgGet.getTicketBySymbol(Knex, 'GDP')
 // .then(console.log)
