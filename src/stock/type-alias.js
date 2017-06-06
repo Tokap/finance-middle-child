@@ -1,4 +1,3 @@
-
 // Timestamp Format Example: 2017-05-10T08:31:03.000Z
 //
 // FullSymbol Format Example: 'NYSE:aapl'

@@ -1,7 +1,8 @@
-const R = require('ramda')
+'use strict';
 
+const R      = require('ramda')
 const Tables = require('./tables.js')
-const Knex = require('./init.js')
+
 
 const saveUserDetails = R.curry( (knex, params) =>
   knex.insert(params, 'id').into(Tables.twitter_user)
@@ -20,8 +21,8 @@ const saveStockPriceDetails = R.curry( (knex, params) =>
 )
 
 module.exports = {
-  saveUserDetails
-, savePostDetails
+  savePostDetails
 , saveStockTicketDetails
 , saveStockPriceDetails
+, saveUserDetails
 }

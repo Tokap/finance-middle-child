@@ -24,7 +24,6 @@ const _makeParams = R.curry( (screen_name, post_count) => {
   }
 })
 
-
 // _getUserProfile :: TweetQueryReturn -> TwitterUser
 const _getUserProfile = R.compose(R.prop('user'), R.head)
 
@@ -67,7 +66,6 @@ const getUserDetails = R.curry( (client, screen_name) => {
   return client.get(STATUS_TIMELINE, params)
   .then( _getInsertFromProfile )
 })
-
 
 // _isReply :: TwitterReturn -> Bool
 const _isReply = R.compose(R.not, R.isNil, R.prop('in_reply_to_user_id'))

@@ -12,6 +12,8 @@ const Stock    = require('./stock/index.js')
 const Twitter  = require('./twitter/index.js')
 const TwitterSeed = require('./twitter/user_seed.js')
 
+const MAX_CONCURRENCY = { concurrency: 4 }
+
 // _getStockTicket :: StockDetailsApi -> String
 const _getStockTicket =
   R.compose(
@@ -19,6 +21,8 @@ const _getStockTicket =
   , R.split(':')
   , R.prop('symbol')
   )
+
+// @TODO concurrency on initial save seems to cause duplicate issue
 
 // _getOrMakeTicketId :: Knex -> String -> List String -> Number
 const _getOrMakeTicketId = R.curry( (knex, symbol, maybe_array) => {
@@ -38,12 +42,6 @@ const _makeInsertParams = R.curry( (stock_details, ticket_id) =>
   , R.assoc('stock_ticket_id', ticket_id)
   )(stock_details)
 )
-
-
-// const _getIdAndSearch = R.curry( (user_details) => {
-//   let id = R.prop('id', user_details)
-//   return Stock.getStockInfoByUserPost(id)
-// })
 
 const _insertStockData = R.curry( (knex, stock_details, ticket_id) => {
   let params = _makeInsertParams(stock_details, ticket_id)
@@ -65,6 +63,13 @@ const saveUserPostStockDetails = R.curry( (knex, user_id) => {
   .then(R.map(insertStockPrice(Knex)))
 })
 
+
+// const _getIdAndSearch = R.curry( (user_details) => {
+//   let id = R.prop('id', user_details)
+//   return Stock.getStockInfoByUserPost(id)
+// })
+
+
 // Got throttled by API
 // const getStockDetailsFromAllUserPosts = R.curry( (knex) => {
 //   console.log('getting user query details')
@@ -76,7 +81,20 @@ const saveUserPostStockDetails = R.curry( (knex, user_id) => {
 //   })
 // })
 
+// const getStockDetailsFromAllUserPosts = R.curry( (knex) => {
+//   console.log('getting user query details')
+//   return PgGet.getUserQueryDetails(knex)
+//   .then(R.map(R.prop('id')) )
+//   .then( (num_array) => {
+//     console.log('ok, here goes this big part')
+//     return Bluebird.map(rez, Stock.getStockInfoByUserPost, MAX_CONCURRENCY)
+//     .then(console.log)
+//   })
+// })
 
+// @TODO The concurrency is throttling the stock API very badly.
+// Will need to consider a better strategy to attain stock data
+// Consider setting up a CRON
 
 let test_obj = {
   symbol: 'AAPL'
@@ -88,13 +106,21 @@ let test_obj = {
 , volume: 1234567890
 }
 
+const _confirm = (thing) => console.log('We did it! ', thing)
 
-// insertStockPrice(Knex, test_obj)
-// getStockDetailsFromAllUserPosts(Knex)
-Stock.getStockInfoByUserPost(5)
+const _iterateThrough = R.curry((knex, array) =>
+  Bluebird.map(array, insertStockPrice(knex))
+)
+
+// Stock.getStockInfoByUserPost(1)
+// .then( (rez) => Bluebird.map(rez, _iterateThrough(Knex)))
+// .then( (rez) => {
+//   console.log('We did it! ', rez)
+//   return rez
+// })
+
+Stock.getStandardHistory('AAPL')
 .then(console.log)
 
-Stock.getStockNews
-// Stock.getStockInfoByUserPost(1)
-// .then()
-// PgInsert
+// PgGet.getTicketBySymbol(Knex, 'GDP')
+// .then(console.log)
