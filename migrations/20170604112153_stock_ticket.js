@@ -4,7 +4,7 @@ exports.up = (knex, Bluebird) => {
   return knex.schema.createTableIfNotExists('stock_ticket', (table) => {
     table.increments('id');
     table.string('symbol');
-    table.string('exhchange');
+    table.string('exchange');
     table.string('company');
     table.timestamps(true,true);
     table.boolean('deleted').defaultTo(false);

@@ -36,9 +36,9 @@ const getPriceHistory = R.curry( (start_date, end_date, exchange, symbol) => {
   })
 })
 
-// getStandardHistory :: String -> List StockDetailsApi
+// getStandardHistory :: String -> String -> List StockDetailsApi
 const getStandardHistory =
-  getPriceHistory(HISTORY_START_DATE, HISTORY_END_DATE, NASDAQ)
+  getPriceHistory(HISTORY_START_DATE, HISTORY_END_DATE)
 
 
 // NOTE: Hits Finance API and will be throttled if too fast
