@@ -46,17 +46,21 @@ const _getAndInsertHistory = R.curry( (knex, details) => {
   .then(R.flatten)
 })
 
-// _saveAndGetHistory :: Knex -> Object -> List StockDetailsApi
+// _saveAndGetHistory :: Knex -> Object -> List Number
 const _saveAndGetHistory = R.curry( (knex, details) =>
   PgInsert.saveStockTicketDetails(knex, details)
   .then(_addTicketIdToDetails(details))
   .then(_getAndInsertHistory(knex))
 )
 
+// seedStockData :: Knex -> List SeedDetails -> I/O
 const seedStockData = R.curry( (knex, seed_array) =>
   Bluebird.map(seed_array, _saveAndGetHistory(knex), MAX_CONCURRENCY)
+  .then(() => {
+    console.log('Stock Seed Complete!')
+    process.exit(0)
+  })
   .catch((e) => console.log('Error During Stock History Seed!', e))
 )
 
 seedStockData(Knex, StockSeed.STOCK_TICKETS)
-.then(console.log('Stock Seed Complete!'))
