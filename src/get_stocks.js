@@ -13,6 +13,7 @@ const StockSeed = require('./stock/ticket_seed.js')
 
 const MAX_CONCURRENCY = { concurrency: 2 }
 
+
 // _addTicketIdToDetails :: Object -> List Number -> Object
 const _addTicketIdToDetails = R.curry( (details, save_id) =>
   R.compose(
@@ -63,4 +64,5 @@ const seedStockData = R.curry( (knex, seed_array) =>
   .catch((e) => console.log('Error During Stock History Seed!', e))
 )
 
+console.log('Retrieving Stock Price History and Saving to DB.')
 seedStockData(Knex, StockSeed.STOCK_TICKETS)
