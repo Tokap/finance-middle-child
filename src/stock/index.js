@@ -25,7 +25,7 @@ const postHasStockTicket   = R.compose(_containsStockTicket, R.prop('text'))
 const _getStockTickets = R.match(STOCK_TICKET_FORMAT)
 
 // _getTicketsFromPost :: Object -> List String
-const _getTicketsFromPost = R.compose(_getStockTickets, R.prop('text'))
+const _getTicketsFromPost = R.compose(_getStockTickets, R.propOr('', 'text'))
 
 // getPriceHistory :: Date -> Date -> String -> String -> List StockDetailsApi
 const getPriceHistory = R.curry( (start_date, end_date, exchange, symbol) => {
@@ -102,4 +102,11 @@ module.exports = {
 , postHasStockTicket
 , validateStockTicket
 , validateTicketsInPosts
+
+// Exported for testing
+, _containsStockTicket
+, _getStockTickets
+, _getTicketsFromPost
+, _validPostOrNull
+, _getStockInfoBySymbolList
 }

@@ -37,3 +37,6 @@ get-stock-history:
 	node ./src/get_stocks.js
 
 full-install: install create-db migrate-latest seed get-posts get-stock-history
+
+run-tests:
+	npm test

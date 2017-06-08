@@ -2,13 +2,12 @@
 
 require('dotenv').config();
 
-const R        = require('ramda')
-const Bluebird = require('bluebird')
-
-const Knex     = require('./postgres/init.js')
-const PgInsert = require('./postgres/insert.js')
-const PgGet    = require('./postgres/get.js')
-const Stock    = require('./stock/index.js')
+const R         = require('ramda')
+const Bluebird  = require('bluebird')
+const Knex      = require('./postgres/init.js')
+const PgInsert  = require('./postgres/insert.js')
+const PgGet     = require('./postgres/get.js')
+const Stock     = require('./stock/index.js')
 const StockSeed = require('./stock/ticket_seed.js')
 
 const MAX_CONCURRENCY = { concurrency: 2 }
