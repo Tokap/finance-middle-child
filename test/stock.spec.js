@@ -65,5 +65,53 @@ describe('Stock Retrieval & Manipulation Functions', () => {
       let return_array = [ ]
       Assert.deepEqual(return_array, Stock._getTicketsFromPost(obj))
     })
+  }),
+
+  describe('#getPriceHistory()', () => {
+    const START_DATE = '2017-06-01'
+    const END_DATE = '2017-06-8'
+    const NASDAQ = 'NASDAQ'
+
+    const getStockHistoryKeys = (symbol) =>
+      Stock.getPriceHistory(START_DATE, END_DATE, NASDAQ, symbol)
+      .then(R.head)
+      .then(R.keys)
+
+    it('should return an array of stock details with specific keys', () => {
+      let keys = ['date', 'open', 'high', 'low', 'close', 'volume', 'symbol']
+
+      return getStockHistoryKeys('AAPL')
+      .then((return_keys) => Assert.deepEqual(keys, return_keys))
+    }),
+    it('should return an empty array if no stock details exist.', () => {
+      let empty_array = [ ]
+      let bad_ticket = 'RDEN' //Company was acquired
+
+      return getStockHistoryKeys(bad_ticket)
+      .then((return_keys) => Assert.deepEqual(empty_array, return_keys))
+    })
+  }),
+
+  describe('#getStandardHistory()', () => {
+    const NASDAQ = 'NASDAQ'
+
+    const getStockHistoryKeys = (symbol) =>
+      Stock.getStandardHistory(NASDAQ, symbol)
+      .then(R.head)
+      .then(R.keys)
+
+    it('should return an array of stock details with specific keys', () => {
+      let keys = ['date', 'open', 'high', 'low', 'close', 'volume', 'symbol']
+
+      return getStockHistoryKeys('AAPL')
+      .then((return_keys) => Assert.deepEqual(keys, return_keys))
+    }),
+    it('should return an empty array if no stock details exist.', () => {
+      let empty_array = [ ]
+      let bad_ticket = 'BUYOOO'
+
+      return getStockHistoryKeys(bad_ticket)
+      .then((return_keys) => Assert.deepEqual(empty_array, return_keys))
+    })
   })
 })
