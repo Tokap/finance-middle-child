@@ -113,5 +113,94 @@ describe('Stock Retrieval & Manipulation Functions', () => {
       return getStockHistoryKeys(bad_ticket)
       .then((return_keys) => Assert.deepEqual(empty_array, return_keys))
     })
+  }),
+
+  describe('#validateStockTicket()', () => {
+    it('should return true if stock ticket is valid', () => {
+
+      return Stock.validateStockTicket('AAPL')
+      .then((bool) => Assert.equal(true, bool))
+    }),
+    it('should return false if stock ticket is invalid', () => {
+      let bad_ticket = 'BUYOOO'
+
+      return Stock.validateStockTicket(bad_ticket)
+      .then((bool) => Assert.equal(false, bool))
+    })
+  }),
+
+  describe('#_validPostOrNull() & #validateTicketsInPosts()', () => {
+    const valid_post =
+      { id: 12
+      , twitter_user_id: '8675309'
+      , post_id: '872460198228742100'
+      , text: 'Test text is good and has a stock ticket like AAPL.'
+      , is_reply: true
+      , re_status_id: '872458703529812000'
+      , re_network_user_id: '7890'
+      , re_username: 'test_username'
+      , posted_at: '2017-06-07 07:28:15'
+      , created_at: '2017-06-07 09:38:34.729475'
+      , updated_at: '2017-06-07 09:38:34.729475'
+      , deleted: false
+      , deleted_at: null
+      }
+
+    const invalid_post =
+      { id: 12
+      , twitter_user_id: '8675309'
+      , post_id: '872460198228742100'
+      , text: 'Test text is good and has a stock ticket like BUYOOO.'
+      , is_reply: true
+      , re_status_id: '872458703529812000'
+      , re_network_user_id: '7890'
+      , re_username: 'test_username'
+      , posted_at: '2017-06-07 07:28:15'
+      , created_at: '2017-06-07 09:38:34.729475'
+      , updated_at: '2017-06-07 09:38:34.729475'
+      , deleted: false
+      , deleted_at: null
+      }
+
+    const post_list  = [valid_post, invalid_post]
+    const valid_list = [valid_post]
+
+
+    it('should return the original post if it contains a valid stock ticket', () =>
+      Stock._validPostOrNull(valid_post)
+      .then((post_or_null) => Assert.equal(valid_post, post_or_null))
+    ),
+    it('should return null if the post contains an invalid stock ticket', () =>
+      Stock._validPostOrNull(invalid_post)
+      .then((post_or_null) => Assert.equal(null, post_or_null))
+    ),
+    it('should return only valid posts from a list', () =>
+      Stock.validateTicketsInPosts(post_list)
+      .then((filtered_list) => Assert.deepEqual(valid_list, filtered_list))
+    )
+  }),
+
+  describe('#getNews()', () => {
+    const NASDAQ = 'NASDAQ'
+
+    const getStockNewsKeys = (symbol) =>
+      Stock.getNews(NASDAQ, symbol)
+      .then(R.head)
+      .then(R.keys)
+
+    const keys =
+      [ 'guid'
+      , 'symbol'
+      , 'title'
+      , 'description'
+      , 'summary'
+      , 'date'
+      , 'link'
+      ]
+
+    it('should return an array of recent stock news', () =>
+      getStockNewsKeys('AAPL')
+      .then((return_keys) => Assert.deepEqual(keys, return_keys))
+    )
   })
 })

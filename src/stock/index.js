@@ -71,24 +71,6 @@ const validateTicketsInPosts = (posts) =>
   Bluebird.map(posts, _validPostOrNull)
   .then(R.reject(R.isNil))
 
-// _getStockInfoBySymbolList :: List String -> List StockDetailsApi
-const _getStockInfoBySymbolList = (symbol_array) =>
-  Bluebird.map(
-    symbol_array
-  , getPriceHistory(HISTORY_START_DATE, HISTORY_END_DATE, NYSE)
-  , MAX_CONCURRENCY
-  )
-  .then(R.flatten)
-
-// getStockInfoByUserPost :: Number -> List StockDetailsApi
-// Returns empty list if no results.
-const getStockInfoByUserPost = (user_id) =>
-  PgGet.getStockTweetsById(user_id)
-  .then(R.map(_getTicketsFromPost))
-  .then( (tickets) =>
-    Bluebird.map(tickets, _getStockInfoBySymbolList, MAX_CONCURRENCY)
-  )
-
 // getNews :: String -> String -> List StockInfo
 const getNews = (exchange, symbol) =>
   Finance.companyNews( {symbol: `${exchange}:${symbol}`} )
@@ -98,7 +80,6 @@ module.exports = {
   getNews
 , getPriceHistory
 , getStandardHistory
-, getStockInfoByUserPost
 , postHasStockTicket
 , validateStockTicket
 , validateTicketsInPosts
@@ -108,5 +89,4 @@ module.exports = {
 , _getStockTickets
 , _getTicketsFromPost
 , _validPostOrNull
-, _getStockInfoBySymbolList
 }
