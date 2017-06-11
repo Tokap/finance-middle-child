@@ -108,7 +108,8 @@ functions. All tests may be run using either:
 - `make test-all`
 
 Alternatively, single test files may be run with:
-- `make run-test filename=desired_test_filename.spec.js`
+- `make run-test test=desired_test_filename`
+- Ex: `make run-test test=twitter`
 
 ## Additional Configuration:
 
