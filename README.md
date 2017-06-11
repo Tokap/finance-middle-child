@@ -17,6 +17,10 @@ All of the information described above is available via API for easy integration
 with applications designed for data analysis. Examples of API
 interactions are shown below.
 
+This application was written in a functional paradigm with heavy use of the
+[Ramda](http://ramdajs.com/) library. It uses [Mocha](https://mochajs.org/) 
+for testing and [Knex](http://knexjs.org/) for database management.
+
 ## API Server:
 
 Launch server with `make server`
