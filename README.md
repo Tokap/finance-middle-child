@@ -100,7 +100,15 @@ API returns results as a JSON array of objects. Example:
 ]
 ```
 
+## Tests:
 
+This application includes thorough testing of API interaction and data manipulation
+functions. All tests may be run using either:
+- `npm test`
+- `make test-all`
+
+Alternatively, single test files may be run with:
+- `make run-test filename=desired_test_filename.spec.js`
 
 ## Additional Configuration:
 
