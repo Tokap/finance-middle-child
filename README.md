@@ -3,9 +3,9 @@
 
 ## Getting Started:
 
-- `brew install postgres`        ( Install Postgres through Brew )
-- `brew services start postgres` ( Start Postgres via Brew )
-- `make full-install`            ( Setup and Populate Database )
+- `brew install postgres`         _Install Postgres through Brew_
+- `brew services start postgres`  _Start Postgres via Brew_
+- `make full-install`             _Setup and Populate Database_
 
 After these steps are completed you will have a database populated with
 top finance figures on Twitter (as suggested by Business Insider) and 150 recent
