@@ -38,5 +38,8 @@ get-stock-history:
 
 full-install: install create-db migrate-latest seed get-posts get-stock-history
 
-run-tests:
+test-all:
 	npm test
+
+run-test:
+	${NODE_BIN}/mocha $(filename)

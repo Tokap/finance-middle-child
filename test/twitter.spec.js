@@ -1,7 +1,9 @@
+'use strict'
 
 const R      = require('ramda')
 const Assert = require('assert');
 const Twitter  = require('../src/twitter/index.js')
+const Stock  = require('../src/stock/index.js')
 
 describe('Twitter Retrieval & Manipulation Functions', () => {
 
@@ -88,7 +90,7 @@ describe('Twitter Retrieval & Manipulation Functions', () => {
     it('should return twitter params when provided arguments', () => {
       let screen_name = 'bobby_rocks'
       let post_count = 100
-      let expected_return = { screen_name: screen_name, post_count: post_count }
+      let expected_return = { screen_name: screen_name, count: post_count }
       let test_case = Twitter._makeParams(screen_name, post_count)
 
       Assert.deepEqual(expected_return, test_case)
@@ -172,7 +174,7 @@ describe('Twitter Retrieval & Manipulation Functions', () => {
       )
     )
   }),
-  
+
   describe('#getRecentTweets()', () => {
     let keys =
     [ 'post_id'
@@ -188,7 +190,7 @@ describe('Twitter Retrieval & Manipulation Functions', () => {
     Twitter.getRecentTweets(CLIENT, VALID_USERNAME)
     .then(R.head)
     .then(R.keys)
-    ,then((return_keys) => Assert.deepEqual(keys, return_keys))
+    .then((return_keys) => Assert.deepEqual(keys, return_keys))
     )
   })
 })

@@ -95,10 +95,12 @@ module.exports = {
 , makeClient
 
 // Exported for testing
-, makeClient
-, makeClient
-, makeClient
-, makeClient
-, makeClient
-, makeClient
+, _makeParams
+, _getUserProfile
+, _getFirstName
+, _getLastName
+, _makeProfileInsert
+, _getInsertFromProfile
+, _isReply
+, _makeTwitterPostInsert
 }
