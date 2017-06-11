@@ -29,13 +29,13 @@ App.get('/username/:username', (req, res) =>
   .catch((e) => console.log('Server Error: ', e))
 )
 
-App.get('/user_id/:user_id', (req, res) =>
+App.get('/twitter_user_id/:user_id', (req, res) =>
   PgGet.getTwitterUserById(Knex, req.params.user_id)
   .then(sendJson(res))
   .catch((e) => console.log('Server Error: ', e))
 )
 
-App.get('/post/:post_id', (req, res) =>
+App.get('/twitter_post/:post_id', (req, res) =>
   PgGet.getTwitterPostById(Knex, req.params.post_id)
   .then(sendJson(res))
   .catch((e) => console.log('Server Error: ', e))
