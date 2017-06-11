@@ -39,4 +39,4 @@ test-all:
 	npm test
 
 run-test:
-	${NODE_BIN}/mocha $(filename)
+	${NODE_BIN}/mocha test/$(filename)
