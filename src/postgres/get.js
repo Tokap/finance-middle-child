@@ -80,13 +80,15 @@ const getStockHistoryByStockId = R.curry( (knex, stock_id) =>
   .orderBy('date', 'asc')
 )
 
-const getStockHistoryBySymbol = R.curry( (knex, symbol) =>
-  knex(Tables.stock_pricing)
-  .leftJoin('stock_ticket', 'stock_ticket.id', 'stock_pricing.stock_ticket_id')
-  .where({ symbol : symbol })
-  .orderBy('date', 'asc')
-)
+const getStockHistoryBySymbol = R.curry( (knex, symbol) => {
+  let where = `LOWER(symbol)= ?`
+  let params = `${R.toLower(symbol)}`
 
+  return knex(Tables.stock_pricing)
+  .leftJoin('stock_ticket', 'stock_ticket.id', 'stock_pricing.stock_ticket_id')
+  .whereRaw(where, params)
+  .orderBy('date', 'asc')
+})
 
 module.exports = {
   getPostDetails

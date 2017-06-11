@@ -23,13 +23,13 @@ App.get('/sys/alive', (req, res) => {
   res.send({ status: "Server is running." });
 })
 
-App.get('/username/:username', (req, res) =>
+App.get('/twitter_user/username/:username', (req, res) =>
   PgGet.getTwitterUserByUsername(Knex, req.params.username)
   .then(sendJson(res))
   .catch((e) => console.log('Server Error: ', e))
 )
 
-App.get('/twitter_user_id/:user_id', (req, res) =>
+App.get('/twitter_user/:user_id', (req, res) =>
   PgGet.getTwitterUserById(Knex, req.params.user_id)
   .then(sendJson(res))
   .catch((e) => console.log('Server Error: ', e))
@@ -41,7 +41,7 @@ App.get('/twitter_post/:post_id', (req, res) =>
   .catch((e) => console.log('Server Error: ', e))
 )
 
-App.get('/user/:user_id/posts', (req, res) =>
+App.get('/twitter_user/:user_id/posts', (req, res) =>
   PgGet.getTwitterPostsByUserId(Knex, req.params.user_id)
   .then(sendJson(res))
   .catch((e) => console.log('Server Error: ', e))
