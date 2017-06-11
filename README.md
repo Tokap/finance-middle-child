@@ -3,9 +3,9 @@ Capturing Finance Hints Through Social Media & Stock Data
 
 ## Getting Started:
 
-- Install Postgres through Brew: `brew install postgres`
-- Start Postgres with `brew services start postgres`
-- Setup and Populate Database with `make full-install`
+- `brew install postgres`        ( Install Postgres through Brew )
+- `brew services start postgres` ( Start Postgres via Brew )
+- `make full-install`            ( Setup and Populate Database )
 
 After these steps are completed you will have a database populated with
 top finance figures on Twitter (as suggested by Business Insider) and 150 recent
@@ -19,7 +19,7 @@ interactions are shown below.
 
 ## API Server:
 
-- Launch server with `make server`
+Launch server with `make server`
 
 API returns results as a JSON array of objects. Example:
 
