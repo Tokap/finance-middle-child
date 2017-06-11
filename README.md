@@ -1,5 +1,5 @@
 # js-middle-child
-Capturing Finance Hints Through Social Media & Stock Data
+**Discover Finance Hints Through Social Media & Stock Data**
 
 ## Getting Started:
 
@@ -14,7 +14,7 @@ analysis, 2+ years of stock pricing information for 7 selected companies will be
 inserted into the database as well.
 
 All of the information described above is available via API for easy integration
-with applications designed to analyze the associated seed data. Examples of API
+with applications designed for data analysis. Examples of API
 interactions are shown below.
 
 ## API Server:
@@ -23,7 +23,7 @@ Launch server with `make server`
 
 API returns results as a JSON array of objects. Example:
 
-Get Stock Price History
+**Get Stock Price History**
 ```javascript
 // http://localhost:3300/history/aray
 
@@ -48,7 +48,7 @@ Get Stock Price History
 ]
 ```
 
-Get Twitter User Information
+**Get Twitter User Information**
 ```javascript
 // http://localhost:3300/twitter_user/username/goldmansachs
 
@@ -73,7 +73,7 @@ Get Twitter User Information
 ]
 ```
 
-User Twitter User Id to Get Post History
+**User Twitter User Id to Get Post History**
 ```javascript
 // http://localhost:3300/twitter_user/7/posts
 
@@ -118,7 +118,7 @@ The following should be set in your `.env` file:
 - `POSTGRES_PORT`
 - `POSTGRES_HOST`
 
-**knexfile:**
+**DB Config with knexfile:**
 
 A `knexfile.js` should be created in order to establish default database configurations
 
@@ -161,6 +161,6 @@ module.exports = {
 }
 ```
 
-> **NOTE** Uses Google Finance - now deprecated, but still functional.
+> **NOTE** App uses Google Finance - now deprecated, but still functional.
 This project is intended to be, and has evolved as, a thought exercise.
 All stock information is intended for personal & non-commercial use.
