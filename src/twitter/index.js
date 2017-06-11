@@ -71,7 +71,7 @@ const getUserDetails = R.curry( (client, screen_name) => {
 const _isReply = R.compose(R.not, R.isNil, R.prop('in_reply_to_user_id'))
 
 // @TODO - add process to handle entities: hashtags,symbols,user_mentions, urls
-// _makeTwitterPostInsert :: TwitterReturn -> ProfileInsert
+// _makeTwitterPostInsert :: TwitterQueryReturn -> PostInsert
 const _makeTwitterPostInsert = R.applySpec({
   post_id            : R.propOr(null, 'id')
 , text               : R.propOr(null, 'text')
@@ -82,7 +82,7 @@ const _makeTwitterPostInsert = R.applySpec({
 , re_username        : R.propOr(null, 'in_reply_to_screen_name')
 })
 
-// getRecentTweets :: TwitterClient -> String -> PostInsert
+// getRecentTweets :: TwitterClient -> String -> List PostInsert
 const getRecentTweets = R.curry( (client, screen_name) => {
   let params = _makeParams(screen_name, 150)
   return client.get(STATUS_TIMELINE, params)
@@ -92,5 +92,13 @@ const getRecentTweets = R.curry( (client, screen_name) => {
 module.exports = {
   getRecentTweets
 , getUserDetails
+, makeClient
+
+// Exported for testing
+, makeClient
+, makeClient
+, makeClient
+, makeClient
+, makeClient
 , makeClient
 }

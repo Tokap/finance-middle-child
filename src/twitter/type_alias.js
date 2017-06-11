@@ -83,3 +83,13 @@
 // , profile_image_url : String
 // , verified : Bool
 // }
+
+// type alias PostInsert =
+// { post_id
+// , text
+// , posted_at
+// , is_reply
+// , re_status_id
+// , re_network_user_id
+// , re_username
+// }
