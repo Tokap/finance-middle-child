@@ -1,6 +1,6 @@
 // Timestamp Format Example: 2017-05-10T08:31:03.000Z
 //
-// FullSymbol Format Example: 'NYSE:aapl'
+// FullSymbol Format Example: 'NYSE:aapl' : String
 //
 // type_alias: StoredTwitterPost =
 // { id: Number
@@ -18,7 +18,7 @@
 // , deleted_at: Timestamp
 // }
 //
-// type_alias: StockDetailsApi =
+// type_alias: StockPriceApi =
 // { date: Timestamp
 // , open: Float
 // , high: Float
@@ -26,4 +26,26 @@
 // , close: Float
 // , volume: Number
 // , symbol: FullSymbol
+// }
+// type_alias: StockPriceInsert =
+// { date: Timestamp
+// , open: Float
+// , high: Float
+// , low: Float
+// , close: Float
+// , volume: Number
+// , stock_ticket_id: Number
+// }
+//
+// type_alias: StockCompany =
+// { symbol: String
+// , exchange: String
+// , company: String
+// }
+
+// type_alias: StockCompanyWithId =
+// { symbol: String
+// , exchange: String
+// , company: String
+// , stock_ticket_id: String
 // }
