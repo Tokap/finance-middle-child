@@ -1,30 +1,36 @@
-// type alias TweetQueryReturn =
+// type alias UnusedObject = { key: value, ... }
+
+// type alias TweetApi =
 // { created_at: String
 // , id : Number
 // , id_str : String
 // , text : String
 // , truncated : Bool
 // , entities:
-//    { hashtags: [Object]
+//    { hashtags: [ UnusedObject ]
 //    , symbols: List String
-//    , user_mentions: [Object]
+//    , user_mentions: [ UnusedObject ]
 //    , urls: List String
-//    , media: [Object]
+//    , media: [ UnusedObject ]
 //    }
-// , extended_entities: { media: [Object] }
+// , extended_entities: { media: [ UnusedObject ] }
 // , source : String
-// , in_reply_to_status_id : null
-// , in_reply_to_status_id_str : null
-// , in_reply_to_user_id : null
-// , in_reply_to_user_id_str : null
-// , in_reply_to_screen_name : null
+// , in_reply_to_status_id : Number
+// , in_reply_to_status_id_str : String
+// , in_reply_to_user_id : Number
+// , in_reply_to_user_id_str : String
+// , in_reply_to_screen_name : String
 // , user : TwitterUser
-// , geo : null
-// , coordinates : null
-// , place : null
-// , contributors : null
-// , retweeted_status : Object
+// , geo : String
+// , coordinates : String
+// , place : String
+// , contributors : String
+// , retweeted_status : UnusedObject
 
+// type alias QueryDetails =
+// { id : Number
+// , username: String
+// }
 
 // type alias TwitterUser =
 // { id : Number

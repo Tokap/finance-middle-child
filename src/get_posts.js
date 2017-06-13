@@ -14,12 +14,11 @@ const TwitterSeed = require('./twitter/user_seed.js')
 const CLIENT  = Twitter.makeClient()
 const MAX_CONCURRENCY = { concurrency: 3 }
 
-// _getRecentTweets :: TwitterClient -> UserDetails -> FullProfileInsert
+// _getRecentTweets :: TwitterClient -> UserDetails -> List TweetApi
 const _getRecentTweets = R.curry( (client, user_detail) => {
   let user_id = R.prop('id', user_detail)
   let username = R.prop('username', user_detail)
 
-  // return Twitter.getRecentTweets(client, username)
   return Twitter.getRecentTweets(client, username)
   .then(R.map(R.assoc('twitter_user_id', user_id)))
 })
@@ -46,7 +45,7 @@ const seedTwitterPosts = () => {
   console.log('Retrieving Twitter Posts and Saving to DB.')
 
   getPostsForUserList(Knex, CLIENT, MAX_CONCURRENCY)
-  .then( (save_ids) => {
+  .then( () => {
     console.log(`Twitter Posts Saved!`)
     process.exit(0)
   })
