@@ -91,11 +91,27 @@
 // }
 
 // type alias PostInsert =
-// { post_id
-// , text
-// , posted_at
-// , is_reply
-// , re_status_id
-// , re_network_user_id
-// , re_username
+// { post_id : Number
+// , text : String
+// , posted_at : Timestamp
+// , is_reply : Bool
+// , re_status_id : Number
+// , re_network_user_id : Number
+// , re_username : String
+// }
+
+// type alias PostInsertWithId =
+// { post_id : Number
+// , text : String
+// , posted_at : Timestamp
+// , is_reply : Bool
+// , re_status_id : Number
+// , re_network_user_id : Number
+// , re_username : String
+// , twitter_user_id : Number
+// }
+
+// type alias TwitterParams =
+// { screen_name : String
+// , count : Number
 // }

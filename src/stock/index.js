@@ -18,13 +18,13 @@ const MAX_CONCURRENCY = { concurrency: 4 }
 // _containsStockTicket :: String -> Bool
 const _containsStockTicket = R.test(STOCK_TICKET_FORMAT);
 
-// postHasStockTicket :: Object -> Bool
-const postHasStockTicket   = R.compose(_containsStockTicket, R.prop('text'))
+// postHasStockTicket :: StoredTwitterPost -> Bool
+const postHasStockTicket = R.compose(_containsStockTicket, R.prop('text'))
 
 // _getStockTickets :: String -> List String
 const _getStockTickets = R.match(STOCK_TICKET_FORMAT)
 
-// _getTicketsFromPost :: Object -> List String
+// _getTicketsFromPost :: StoredTwitterPost -> List String
 const _getTicketsFromPost = R.compose(_getStockTickets, R.propOr('', 'text'))
 
 // getPriceHistory :: Date -> Date -> String -> String -> List StockDetailsApi
@@ -41,7 +41,7 @@ const getStandardHistory =
   getPriceHistory(HISTORY_START_DATE, HISTORY_END_DATE)
 
 
-// NOTE: Hits Finance API and will be throttled if too fast
+// NOTE: Hits Finance API and will be throttled/blocked if reqs too rapid
 // validateStockTicket :: String -> Bool
 const validateStockTicket = (symbol) => {
   let end = Moment().format("YYYY-MM-DD")
@@ -65,13 +65,13 @@ const _validPostOrNull = (post) => {
   })
 }
 
-// NOTE: Hits Finance API and will be throttled if too fast
+// NOTE: Hits Finance API and will be throttled/blocked if reqs too rapid
 // validateTicketsInPosts :: List StoredTwitterPost -> List StoredTwitterPost
 const validateTicketsInPosts = (posts) =>
   Bluebird.map(posts, _validPostOrNull)
   .then(R.reject(R.isNil))
 
-// getNews :: String -> String -> List StockInfo
+// getNews :: String -> String -> List StockNews
 const getNews = (exchange, symbol) =>
   Finance.companyNews( {symbol: `${exchange}:${symbol}`} )
 

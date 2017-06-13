@@ -2,6 +2,8 @@
 //
 // FullSymbol Format Example: 'NYSE:aapl' : String
 //
+// Date Format Example: '2015-01-01' : String
+//
 // type_alias: StoredTwitterPost =
 // { id: Number
 // , twitter_user_id: String
@@ -48,4 +50,14 @@
 // , exchange: String
 // , company: String
 // , stock_ticket_id: String
+// }
+
+// type_alias: StockNews =
+// { guid : String
+// , symbol : String
+// , title : String
+// , description : String
+// , summary : String
+// , date : Timestamp
+// , link : String
 // }

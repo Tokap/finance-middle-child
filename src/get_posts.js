@@ -14,7 +14,7 @@ const TwitterSeed = require('./twitter/user_seed.js')
 const CLIENT  = Twitter.makeClient()
 const MAX_CONCURRENCY = { concurrency: 3 }
 
-// _getRecentTweets :: TwitterClient -> UserDetails -> List TweetApi
+// _getRecentTweets :: TwitterClient -> UserDetails -> List PostInsertWithId
 const _getRecentTweets = R.curry( (client, user_detail) => {
   let user_id = R.prop('id', user_detail)
   let username = R.prop('username', user_detail)

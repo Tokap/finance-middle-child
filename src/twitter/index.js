@@ -16,7 +16,7 @@ const makeClient = () =>
   , access_token_secret : process.env.TWITTER_ACCESS_TOKEN_SECRET
   });
 
-// _makeParams :: String -> Int -> TwitterParams
+// _makeParams :: String -> Number -> TwitterParams
 const _makeParams = R.curry( (screen_name, post_count) => {
   return {
     screen_name : screen_name
@@ -24,7 +24,7 @@ const _makeParams = R.curry( (screen_name, post_count) => {
   }
 })
 
-// _getUserProfile :: TweetQueryReturn -> TwitterUser
+// _getUserProfile :: TweetApi -> TwitterUser
 const _getUserProfile = R.compose(R.prop('user'), R.head)
 
 // _getFirstName :: TwitterUser -> String
@@ -64,14 +64,17 @@ const _getInsertFromProfile = R.compose(_makeProfileInsert, _getUserProfile)
 const getUserDetails = R.curry( (client, screen_name) => {
   let params = _makeParams(screen_name, 1)
   return client.get(STATUS_TIMELINE, params)
-  .then( _getInsertFromProfile )
+  .then(_getInsertFromProfile)
 })
 
 // _isReply :: TwitterReturn -> Bool
-const _isReply = R.compose(R.not, R.isNil, R.prop('in_reply_to_user_id'))
+const _isReply = R.compose(
+  R.not
+, R.isNil
+, R.prop('in_reply_to_user_id')
+)
 
-// @TODO - add process to handle entities: hashtags,symbols,user_mentions, urls
-// _makeTwitterPostInsert :: TwitterQueryReturn -> PostInsert
+// _makeTwitterPostInsert :: TweetApi -> PostInsert
 const _makeTwitterPostInsert = R.applySpec({
   post_id            : R.propOr(null, 'id')
 , text               : R.propOr(null, 'text')
