@@ -31,12 +31,24 @@ const Knex = knex(_knexConfig);
 
 describe('Database Retrieval & Manipulation Functions', () => {
 
+  const CONFIRMED_BLACK_LIST =
+  [ 'USD'
+  , 'GBP'
+  , 'RIP'
+  , 'FYI'
+  , 'YES'
+  , 'ECB'
+  ]
+
   const dropKeys = R.omit(
     [ 'id'
     , 'created_at'
     , 'updated_at'
     , 'deleted'
     , 'deleted_at'
+    
+    , 'posted_at'
+    , 'account_created_at'
     ])
 
   describe('#saveUserDetails()', () => {
@@ -82,7 +94,7 @@ describe('Database Retrieval & Manipulation Functions', () => {
     let true_text  = "This is a great time to buy USD."
 
     it('should contain the same items as confirmed black list:', () =>
-      Assert.deepEqual(Inserts.CONFIRMED_BLACK_LIST, PgGet.BLACK_LIST)
+      Assert.deepEqual(CONFIRMED_BLACK_LIST, PgGet.BLACK_LIST)
     ),
     it('should return true if a black list term is present in string', () =>
       Assert.equal(true, PgGet._hasBlacklistTerm(PgGet.BLACK_LIST, true_text))
@@ -170,7 +182,7 @@ describe('Database Retrieval & Manipulation Functions', () => {
     it('should return a list containing user details', () =>
       PgGet.getTwitterUserByUsername(Knex, Inserts.USER_TWO.username)
       .then( R.compose(dropKeys, R.head) )
-      .then( (user_return) => Assert.deepEqual(Inserts.STOCK_TWO, user_return) )
+      .then( (user_return) => Assert.deepEqual(Inserts.USER_TWO, user_return) )
     )
   }),
 
@@ -179,7 +191,7 @@ describe('Database Retrieval & Manipulation Functions', () => {
     it('should return a list containing user details', () =>
       PgGet.getTwitterUserById(Knex, 2)
       .then( R.compose(dropKeys, R.head) )
-      .then( (user_return) => Assert.deepEqual(Inserts.STOCK_TWO, user_return) )
+      .then( (user_return) => Assert.deepEqual(Inserts.USER_TWO, user_return) )
     )
   }),
 

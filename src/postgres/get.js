@@ -4,8 +4,8 @@ const R      = require('ramda')
 const Stock  = require('../stock/index.js')
 const Tables = require('./tables.js')
 
-const BLACK_LIST = [
-  'USD'
+const BLACK_LIST =
+[ 'USD'
 , 'GBP'
 , 'RIP'
 , 'FYI'

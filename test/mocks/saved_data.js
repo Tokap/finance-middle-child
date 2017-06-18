@@ -1,5 +1,5 @@
 const USER_ONE =
-{ network_id : 58754203
+{ network_id : '58754203'
 , username : 'kitjuckes'
 , first_name : 'Kit'
 , last_name : 'Juckes'
@@ -13,7 +13,7 @@ const USER_ONE =
 }
 
 const USER_TWO =
-{ network_id : 58754203
+{ network_id : '58754203'
 , username : 'albertcamus'
 , first_name : 'Albert'
 , last_name : 'Camus'
@@ -27,8 +27,8 @@ const USER_TWO =
 }
 
 const POST_ONE =
-{ twitter_user_id : 2
-, post_id : 874632141325381600
+{ twitter_user_id : '2'
+, post_id : '874632141325381600'
 , text : 'Autumn is a second spring when every leaf is a flower. Buy AMZN.'
 , is_reply : false
 , re_status_id : null
@@ -38,12 +38,12 @@ const POST_ONE =
 }
 
 const POST_TWO =
-{ twitter_user_id : 2
-, post_id : 8746321413224581600
+{ twitter_user_id : '2'
+, post_id : '8746321413224581600'
 , text : 'Nobody realizes that some people expend tremendous energy merely to be normal.'
 , is_reply : true
-, re_status_id : 874560949847564300
-, re_network_user_id : 138141969
+, re_status_id : '874560949847564300'
+, re_network_user_id : '138141969'
 , re_username : 'TheRealSartre'
 , posted_at : '2017-06-13 02:56:27'
 }
@@ -61,23 +61,23 @@ const STOCK_TWO =
 }
 
 const STOCK_PRICE_ONE =
-{ stock_ticket_id : 1
+{ stock_ticket_id : '1'
 , date : '2016-01-06T00:00:00.000-08:00'
-, open : 7.72
-, high : 7.77
-, low : 7.59
-, close : 7.69
-, volume : 775739
+, open : '7.72'
+, high : '7.77'
+, low : '7.59'
+, close : '7.69'
+, volume : '775739'
 }
 
 const STOCK_PRICE_TWO =
-{ stock_ticket_id : 1
+{ stock_ticket_id : '1'
 , date : '2016-01-07T00:00:00.000-08:00'
-, open : 7.69
-, high : 7.85
-, low : 7.22
-, close : 7.77
-, volume : 825735
+, open : '7.69'
+, high : '7.85'
+, low : '7.22'
+, close : '7.77'
+, volume : '825735'
 }
 
 

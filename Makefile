@@ -35,7 +35,7 @@ get-stock-history:
 
 full-install: install create-db migrate-latest seed get-posts get-stock-history
 
-make-test-db:
+test-db:
 	createdb test_application_data
 	${NODE_BIN}/knex migrate:latest --env test
 
