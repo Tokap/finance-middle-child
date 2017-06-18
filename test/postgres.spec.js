@@ -8,6 +8,8 @@ const knex     = require('knex')
 const PgInsert = require('../src/postgres/insert.js')
 const PgGet    = require('../src/postgres/get.js')
 
+const Inserts = require('./mocks/saved_data.js')
+
 const TEST_DB_NAME = 'test_application_data'
 
 const _conn = {
@@ -29,101 +31,18 @@ const Knex = knex(_knexConfig);
 
 describe('Database Retrieval & Manipulation Functions', () => {
 
-  const CONFIRMED_BLACK_LIST =
-  [ 'USD'
-  , 'GBP'
-  , 'RIP'
-  , 'FYI'
-  , 'YES'
-  , 'ECB'
-  ]
-
-  const USER_ONE =
-  { network_id: 58754203
-  , username: 'kitjuckes'
-  , first_name: 'Kit'
-  , last_name: 'Juckes'
-  , description: 'The Fool on the Hill sees the sun going down ...'
-  , location: 'Macro-land'
-  , followers_count: 18453
-  , friends_count: 1288
-  , account_created_at: '2009-07-21 02:42:25'
-  , profile_image_url: 'http://pbs.twimg.com/profile_images/3507423572/ac3063875d92225491bb840b79765d61_normal.jpeg'
-  , verified: false
-  }
-
-  const USER_TWO =
-  { network_id: 58754203
-  , username: 'albertcamus'
-  , first_name: 'Albert'
-  , last_name: 'Camus'
-  , description: 'Man is the only creature that refuses to be what he is.'
-  , location: 'University of Algiers, French Algeria'
-  , followers_count: 2184534
-  , friends_count: 11289
-  , account_created_at: '2015-08-22 03:12:22'
-  , profile_image_url: 'https://en.wikipedia.org/wiki/Albert_Camus'
-  , verified: true
-  }
-
-  const POST_ONE =
-  { twitter_user_id: 2
-  , post_id: 874632141325381600
-  , text: 'Autumn is a second spring when every leaf is a flower.'
-  , is_reply: false
-  , re_status_id: null
-  , re_network_user_id: null
-  , re_username: null
-  , posted_at: null
-  }
-
-  const POST_TWO =
-  { twitter_user_id: 2
-  , post_id: 8746321413224581600
-  , text: 'Nobody realizes that some people expend tremendous energy merely to be normal.'
-  , is_reply: true
-  , re_status_id: 874560949847564300
-  , re_network_user_id: 138141969
-  , re_username: 'TheRealSartre'
-  , posted_at: '2017-06-13 02:56:27'
-  }
-
-  const STOCK_ONE =
-  { symbol: 'ARAY'
-  , exchange: 'NASDAQ'
-  , company: 'Accuray Inc'
-  }
-
-  const STOCK_TWO =
-  { symbol: 'ELY'
-  , exchange: 'NYSE'
-  , company: 'Callaway Golf Co'
-  }
-
-  const STOCK_PRICE_ONE =
-  { stock_ticket_id: 1
-  , date: '2016-01-06T00:00:00.000-08:00'
-  , open: 7.72
-  , high: 7.77
-  , low: 7.59
-  , close: 7.69
-  , volume: 775739
-  }
-
-  const STOCK_PRICE_TWO =
-  { stock_ticket_id: 1
-  , date: '2016-01-07T00:00:00.000-08:00'
-  , open: 7.69
-  , high: 7.85
-  , low: 7.22
-  , close: 7.77
-  , volume: 825735
-  }
+  const dropKeys = R.omit(
+    [ 'id'
+    , 'created_at'
+    , 'updated_at'
+    , 'deleted'
+    , 'deleted_at'
+    ])
 
   describe('#saveUserDetails()', () => {
 
     it('should return a list of save ids after successful ', () =>
-      PgInsert.saveUserDetails(Knex, [ USER_ONE, USER_TWO ])
+      PgInsert.saveUserDetails(Knex, [ Inserts.USER_ONE, Inserts.USER_TWO ])
       .then( (save_ids) => Assert.deepEqual([ 1, 2 ], save_ids) )
     )
   }),
@@ -131,7 +50,7 @@ describe('Database Retrieval & Manipulation Functions', () => {
   describe('#savePostDetails()', () => {
 
     it('should return a list of save ids after successful ', () =>
-      PgInsert.savePostDetails(Knex, [ POST_ONE, POST_TWO ])
+      PgInsert.savePostDetails(Knex, [ Inserts.POST_ONE, Inserts.POST_TWO ])
       .then( (save_ids) => Assert.deepEqual([ 1, 2 ], save_ids) )
     )
   }),
@@ -139,7 +58,10 @@ describe('Database Retrieval & Manipulation Functions', () => {
   describe('#saveStockTicketDetails()', () => {
 
     it('should return a list of save ids after successful ', () =>
-      PgInsert.saveStockTicketDetails(Knex, [ STOCK_ONE, STOCK_TWO ])
+      PgInsert.saveStockTicketDetails(
+        Knex
+      , [ Inserts.STOCK_ONE, Inserts.STOCK_TWO ]
+      )
       .then( (save_ids) => Assert.deepEqual([ 1, 2 ], save_ids) )
     )
   }),
@@ -147,7 +69,10 @@ describe('Database Retrieval & Manipulation Functions', () => {
   describe('#saveStockPriceDetails()', () => {
 
     it('should return a list of save ids after successful ', () =>
-      PgInsert.saveStockPriceDetails(Knex, [ STOCK_PRICE_ONE, STOCK_PRICE_TWO ])
+      PgInsert.saveStockPriceDetails(
+        Knex
+      , [ Inserts.STOCK_PRICE_ONE, Inserts.STOCK_PRICE_TWO ]
+      )
       .then( (save_ids) => Assert.deepEqual([ 1, 2 ], save_ids) )
     )
   }),
@@ -157,7 +82,7 @@ describe('Database Retrieval & Manipulation Functions', () => {
     let true_text  = "This is a great time to buy USD."
 
     it('should contain the same items as confirmed black list:', () =>
-      Assert.deepEqual(CONFIRMED_BLACK_LIST, PgGet.BLACK_LIST)
+      Assert.deepEqual(Inserts.CONFIRMED_BLACK_LIST, PgGet.BLACK_LIST)
     ),
     it('should return true if a black list term is present in string', () =>
       Assert.equal(true, PgGet._hasBlacklistTerm(PgGet.BLACK_LIST, true_text))
@@ -168,7 +93,7 @@ describe('Database Retrieval & Manipulation Functions', () => {
   }),
 
   describe('#_postHasBlackListTerm()', () => {
-    let false_obj = { text: "This is a great time to buy bananas." }
+    let false_obj = { text: "This is a great time to buy AAPL." }
     let true_obj  = { text: "FYI - This is a great time to buy GBP." }
 
     it('should return true if a black list term is present in object', () =>
@@ -177,5 +102,143 @@ describe('Database Retrieval & Manipulation Functions', () => {
     it('should return false if a black list term isnt present in object', () =>
       Assert.equal(false, PgGet._postHasBlackListTerm(false_obj))
     )
+  }),
+
+  describe('#getStockTweetsByUserId()', () => {
+    let user_with_posts    = 2
+    let user_without_posts = 1
+
+    let dropKeys = R.omit(
+      [ 'id'
+      , 'created_at'
+      , 'updated_at'
+      , 'deleted'
+      , 'deleted_at'
+      ])
+
+    it('should return a list containing posts with stock ticket mentions', () =>
+      PgGet.getStockTweetsByUserId(Knex, user_with_posts)
+      .then( R.compose(dropKeys, R.head) )
+      .then( (post_object) => Assert.deepEqual(Inserts.POST_ONE, post_object) )
+    ),
+    it('should return an empty list when no posts found with stock mentions', () =>
+    PgGet.getStockTweetsByUserId(Knex, user_without_posts)
+    .then( (post_return) => Assert.deepEqual(true, R.isEmpty(post_return)) )
+    )
+  }),
+
+  describe('#getUserQueryDetails()', () => {
+    let first_user = {
+      id: 1
+    , username: Inserts.USER_ONE.username
+    }
+
+    let second_user = {
+      id: 2
+    , username: Inserts.USER_TWO.username
+    }
+
+    let all_users = [ first_user, second_user ]
+
+    it('should return a list containing the id and username of all users in db', () =>
+      PgGet.getUserQueryDetails(Knex)
+      .then( (user_return) => Assert.deepEqual(all_users, user_return) )
+    )
+  }),
+
+  describe('#getPostDetails()', () => {
+    let all_posts = [ Inserts.POST_ONE, Inserts.POST_TWO ]
+
+    it('should return a list containing all stored twitter posts', () =>
+      PgGet.getPostDetails(Knex)
+      .then( R.map(dropKeys) )
+      .then( (post_return) => Assert.deepEqual(all_posts, post_return) )
+    )
+  }),
+
+  describe('#getTicketBySymbol()', () => {
+
+    it('should return a list containing stock ticket details', () =>
+      PgGet.getTicketBySymbol(Knex, Inserts.STOCK_TWO.symbol)
+      .then( R.compose(dropKeys, R.head) )
+      .then( (stock_return) => Assert.deepEqual(Inserts.STOCK_TWO, stock_return) )
+    )
+  }),
+
+  describe('#getTwitterUserByUsername()', () => {
+
+    it('should return a list containing user details', () =>
+      PgGet.getTwitterUserByUsername(Knex, Inserts.USER_TWO.username)
+      .then( R.compose(dropKeys, R.head) )
+      .then( (user_return) => Assert.deepEqual(Inserts.STOCK_TWO, user_return) )
+    )
+  }),
+
+  describe('#getTwitterUserById()', () => {
+
+    it('should return a list containing user details', () =>
+      PgGet.getTwitterUserById(Knex, 2)
+      .then( R.compose(dropKeys, R.head) )
+      .then( (user_return) => Assert.deepEqual(Inserts.STOCK_TWO, user_return) )
+    )
+  }),
+
+  describe('#getTwitterPostById()', () => {
+
+    it('should return a list containing post details', () =>
+      PgGet.getTwitterPostById(Knex, 1)
+      .then( R.compose(dropKeys, R.head) )
+      .then( (post_return) => Assert.deepEqual(Inserts.POST_ONE, post_return) )
+    )
+  }),
+
+  describe('#getTwitterPostsByUserId()', () => {
+    let all_posts = [ Inserts.POST_ONE, Inserts.POST_TWO ]
+
+    it('should return a list containing multiple post details', () =>
+      PgGet.getTwitterPostsByUserId(Knex, 2)
+      .then( R.map(dropKeys) )
+      .then( (post_return) => Assert.deepEqual(all_posts, post_return) )
+    )
+  }),
+
+  describe('#getStockById()', () => {
+
+    it('should return a list containing stock details', () =>
+      PgGet.getStockById(Knex, 1)
+      .then( R.compose(dropKeys, R.head) )
+      .then( (stock_return) => Assert.deepEqual(Inserts.STOCK_ONE, stock_return) )
+    )
+  }),
+
+  describe('#getAllStocks()', () => {
+    let all_stocks = [ Inserts.STOCK_ONE, Inserts.STOCK_TWO ]
+
+    it('should return a list containing all stock details', () =>
+      PgGet.getAllStocks(Knex)
+      .then( R.map(dropKeys) )
+      .then( (stock_return) => Assert.deepEqual(all_stocks, stock_return) )
+    )
+  }),
+
+  describe('#getStockHistoryByStockId()', () => {
+    let all_prices = [ Inserts.STOCK_PRICE_ONE, Inserts.STOCK_PRICE_TWO ]
+
+    it('should return a list containing the price history details', () =>
+      PgGet.getStockHistoryByStockId(Knex, 1)
+      .then( R.map(dropKeys) )
+      .then( (price_return) => Assert.deepEqual(all_prices, price_return) )
+    )
+  }),
+
+  describe('#getStockHistoryBySymbol()', () => {
+    let all_prices = [ Inserts.STOCK_PRICE_ONE, Inserts.STOCK_PRICE_TWO ]
+
+    it('should return a list containing the price history details', () =>
+      PgGet.getStockHistoryBySymbol(Knex, Inserts.STOCK_ONE.symbol)
+      .then( R.map(dropKeys) )
+      .then( (price_return) => Assert.deepEqual(all_prices, price_return) )
+    )
   })
+
 })
