@@ -1,7 +1,8 @@
-'use strict';
+'use strict'
 
 const R      = require('ramda')
 const Tables = require('./tables.js')
+
 
 // saveUserDetails :: Knex -> Object -> List Number
 const saveUserDetails = R.curry( (knex, params) =>
@@ -22,6 +23,7 @@ const saveStockTicketDetails = R.curry( (knex, params) =>
 const saveStockPriceDetails = R.curry( (knex, params) =>
   knex.insert(params, 'id').into(Tables.stock_pricing)
 )
+
 
 module.exports = {
   savePostDetails

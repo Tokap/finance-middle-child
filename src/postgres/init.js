@@ -1,14 +1,16 @@
-'use strict';
+'use strict'
 
-require('dotenv').config();
+require('dotenv').config()
 
-const Knex = require('knex');
+const Knex = require('knex')
+
+const DB_NAME = 'application_data'
 
 
 const _conn = {
   host: process.env.POSTGRES_HOST
 , port: process.env.POSTGRES_PORT
-, database: process.env.POSTGRES_MAIN_DB
+, database: DB_NAME
 , user: process.env.POSTGRES_USER
 , password: process.env.POSTGRES_PW
 };

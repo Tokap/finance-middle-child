@@ -126,7 +126,6 @@ The following should be set in your `.env` file:
 - `TWITTER_ACCESS_TOKEN_SECRET`
 
 - `POSTGRES_USER`
-- `POSTGRES_MAIN_DB`
 - `POSTGRES_PW`
 - `POSTGRES_PORT`
 - `POSTGRES_HOST`

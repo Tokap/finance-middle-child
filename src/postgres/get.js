@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 const R      = require('ramda')
 const Stock  = require('../stock/index.js')
@@ -14,7 +14,7 @@ const BLACK_LIST = [
 ]
 
 
-// _postHasBlackListTerm :: List String -> Bool
+// _postHasBlackListTerm :: List String -> String -> Bool
 const _hasBlacklistTerm = R.curry( (black_list, text) =>
   R.compose(
     R.contains(true)
@@ -118,4 +118,9 @@ module.exports = {
 , getTwitterUserById
 , getTwitterUserByUsername
 , getUserQueryDetails
+
+// Exported for testing
+, BLACK_LIST
+, _hasBlacklistTerm
+, _postHasBlackListTerm
 }

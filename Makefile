@@ -35,8 +35,15 @@ get-stock-history:
 
 full-install: install create-db migrate-latest seed get-posts get-stock-history
 
+make-test-db:
+	createdb test_application_data
+	${NODE_BIN}/knex migrate:latest --env test
+
 test-all:
+	createdb test_application_data
+	${NODE_BIN}/knex migrate:latest --env test
 	npm test
+	dropdb test_application_data
 
 run-test:
 	${NODE_BIN}/mocha test/$(test).spec.js
