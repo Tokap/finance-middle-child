@@ -35,18 +35,22 @@ const getStockTweetsById = R.curry ( (knex, user_id) =>
   .then(R.reject(_postHasBlackListTerm))
 )
 
+// getUserQueryDetails :: Knex -> List Object
 const getUserQueryDetails = R.curry( (knex) =>
   knex.select('id', 'username').from(Tables.twitter_user)
 )
 
+// getPostDetails :: Knex -> List Object
 const getPostDetails = R.curry( (knex) =>
   knex.select().from(Tables.twitter_post)
 )
 
+// getTicketBySymbol :: Knex -> String -> List Object
 const getTicketBySymbol = R.curry( (knex, symbol) =>
   knex.select().from(Tables.stock_ticket).where( { symbol: symbol } )
 )
 
+// getTwitterUserByUsername :: Knex -> String -> List Object
 const getTwitterUserByUsername = R.curry( (knex, username) => {
   let where = `LOWER(username)= ?`
   let params = `${R.toLower(username)}`
@@ -54,32 +58,39 @@ const getTwitterUserByUsername = R.curry( (knex, username) => {
   return knex(Tables.twitter_user).whereRaw(where, params)
 })
 
+// getTwitterUserById :: Knex -> Number -> List Object
 const getTwitterUserById = R.curry( (knex, user_id) =>
   knex(Tables.twitter_user).where({ id : user_id })
 )
 
+// getTwitterPostById :: Knex -> Number -> List Object
 const getTwitterPostById = R.curry( (knex, post_id) =>
   knex(Tables.twitter_post).where({ id : post_id })
 )
 
+// getTwitterPostsByUserId :: Knex -> Number -> List Object
 const getTwitterPostsByUserId = R.curry( (knex, user_id) =>
   knex(Tables.twitter_post).where({ twitter_user_id : user_id })
 )
 
+// getStockById :: Knex -> Number -> List Object
 const getStockById = R.curry( (knex, stock_id) =>
   knex(Tables.stock_ticket).where({ id : stock_id })
 )
 
+// getStockById :: Knex -> List Object
 const getAllStocks = R.curry( (knex) =>
   knex.select().table(Tables.stock_ticket)
 )
 
+// getStockHistoryByStockId :: Knex -> Number -> List Object
 const getStockHistoryByStockId = R.curry( (knex, stock_id) =>
   knex(Tables.stock_pricing)
   .where({ stock_ticket_id : stock_id })
   .orderBy('date', 'asc')
 )
 
+// getStockHistoryBySymbol :: Knex -> String -> List Object
 const getStockHistoryBySymbol = R.curry( (knex, symbol) => {
   let where = `LOWER(symbol)= ?`
   let params = `${R.toLower(symbol)}`
@@ -90,6 +101,7 @@ const getStockHistoryBySymbol = R.curry( (knex, symbol) => {
   .orderBy('date', 'asc')
 })
 
+
 module.exports = {
   getPostDetails
 , getStockTweetsById
@@ -97,7 +109,6 @@ module.exports = {
 , getStockById
 , getStockHistoryByStockId
 , getStockHistoryBySymbol
-
 , getAllStocks
 , getTicketBySymbol
 
