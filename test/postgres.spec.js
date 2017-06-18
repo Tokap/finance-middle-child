@@ -28,7 +28,7 @@ const _knexConfig = {
 
 const Knex = knex(_knexConfig);
 
-
+// @TODO - some tests failing : timestamp from db is formatted odd on return
 describe('Database Retrieval & Manipulation Functions', () => {
 
   const CONFIRMED_BLACK_LIST =
@@ -46,7 +46,7 @@ describe('Database Retrieval & Manipulation Functions', () => {
     , 'updated_at'
     , 'deleted'
     , 'deleted_at'
-    
+
     , 'posted_at'
     , 'account_created_at'
     ])
