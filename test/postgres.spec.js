@@ -32,13 +32,13 @@ const Knex = knex(_knexConfig);
 describe('Database Retrieval & Manipulation Functions', () => {
 
   const CONFIRMED_BLACK_LIST =
-  [ 'USD'
-  , 'GBP'
-  , 'RIP'
-  , 'FYI'
-  , 'YES'
-  , 'ECB'
-  ]
+    [ 'USD'
+    , 'GBP'
+    , 'RIP'
+    , 'FYI'
+    , 'YES'
+    , 'ECB'
+    ]
 
   const dropKeys = R.omit(
     [ 'id'
@@ -47,9 +47,24 @@ describe('Database Retrieval & Manipulation Functions', () => {
     , 'deleted'
     , 'deleted_at'
 
-    , 'posted_at'
+    // , 'posted_at'
     , 'account_created_at'
     ])
+
+  const _makeDateString = (string) => new Date(string).toString()
+
+  const propStringToDateString = (prop_name, obj) =>
+    R.compose(
+      R.assoc(prop_name, R.__, obj)
+    , _makeDateString
+    , R.prop(prop_name)
+    )(obj)
+
+
+  const propDateToDateString = (prop_name, obj) => {
+    let date = R.prop(prop_name, obj)
+    return R.assoc(prop_name, date.toString(), obj)
+  }
 
   describe('#saveUserDetails()', () => {
 
@@ -120,16 +135,13 @@ describe('Database Retrieval & Manipulation Functions', () => {
     let user_with_posts    = 2
     let user_without_posts = 1
 
-    let dropKeys = R.omit(
-      [ 'id'
-      , 'created_at'
-      , 'updated_at'
-      , 'deleted'
-      , 'deleted_at'
-      ])
+    // Posted_at is a Date object. We need to convert it to a datestring & original insert to datestring and tests will pass.
+    // This is to be done so proper comparisons can be made. deepEqual fails otherwise.
 
     it('should return a list containing posts with stock ticket mentions', () =>
       PgGet.getStockTweetsByUserId(Knex, user_with_posts)
+      .tap( (rez) => console.log('TYPE OF DATE: ', rez[0].posted_at.toString() === new Date('2017-06-13 02:56:27').toString() ) )
+      .tap( (rez) => console.log('NEW DATE: ', new Date('2017-06-13 02:56:27').toString() ) )
       .then( R.compose(dropKeys, R.head) )
       .then( (post_object) => Assert.deepEqual(Inserts.POST_ONE, post_object) )
     ),
@@ -159,11 +171,15 @@ describe('Database Retrieval & Manipulation Functions', () => {
   }),
 
   describe('#getPostDetails()', () => {
-    let all_posts = [ Inserts.POST_ONE, Inserts.POST_TWO ]
+    let _dropPostedAt = R.dissoc('posted_at')
+
+    let all_posts = [ _dropPostedAt(Inserts.POST_ONE), _dropPostedAt(Inserts.POST_TWO) ]
 
     it('should return a list containing all stored twitter posts', () =>
       PgGet.getPostDetails(Knex)
+      .tap( rez => console.log('Here is the rez: ', rez))
       .then( R.map(dropKeys) )
+      .tap( rez => console.log('Here is after dropped keys: ', rez))
       .then( (post_return) => Assert.deepEqual(all_posts, post_return) )
     )
   }),
@@ -244,7 +260,10 @@ describe('Database Retrieval & Manipulation Functions', () => {
   }),
 
   describe('#getStockHistoryBySymbol()', () => {
-    let all_prices = [ Inserts.STOCK_PRICE_ONE, Inserts.STOCK_PRICE_TWO ]
+    let all_prices =
+      [ R.merge(Inserts.STOCK_PRICE_ONE, Inserts.STOCK_ONE)
+      , R.merge(Inserts.STOCK_PRICE_TWO, Inserts.STOCK_ONE)
+      ]
 
     it('should return a list containing the price history details', () =>
       PgGet.getStockHistoryBySymbol(Knex, Inserts.STOCK_ONE.symbol)

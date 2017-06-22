@@ -34,7 +34,7 @@ const POST_ONE =
 , re_status_id : null
 , re_network_user_id : null
 , re_username : null
-, posted_at : null
+, posted_at : '2017-06-13 02:56:27'
 }
 
 const POST_TWO =
