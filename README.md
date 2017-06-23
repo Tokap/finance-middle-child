@@ -104,9 +104,9 @@ API returns results as a JSON array of objects. Example:
 
 This application includes thorough testing of API interaction and data manipulation
 functions. The following options are available:
-- Run all tests ------> `make test-all`
+- Run all tests -> `make test-all`
 - Run database tests -> `make test-db`
-- Run a single test --> `make test-one test=desired_test_filename`
+- Run a single test -> `make test-one test=desired_test_filename`
 
 ## Additional Configuration:
 
