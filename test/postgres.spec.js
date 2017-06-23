@@ -28,8 +28,10 @@ const _knexConfig = {
 
 const Knex = knex(_knexConfig);
 
+// _makeDate :: String -> Date
 const _makeDate = string => new Date(string)
 
+// propStringToDate :: String -> Object -> Object
 const propStringToDate = R.curry( (prop_name, obj) =>
   R.compose(
     R.assoc(prop_name, R.__, obj)
@@ -38,6 +40,7 @@ const propStringToDate = R.curry( (prop_name, obj) =>
   )(obj)
 )
 
+// dropKeys :: Object -> Object
 const dropKeys = R.omit(
   [ 'id'
   , 'created_at'
@@ -66,7 +69,6 @@ describe('Database Retrieval & Manipulation Functions', () => {
     , 'YES'
     , 'ECB'
     ]
-
 
 
   describe('#saveUserDetails()', () => {
