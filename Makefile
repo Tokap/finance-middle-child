@@ -38,6 +38,8 @@ full-install: install create-db migrate-latest seed get-posts get-stock-history
 test-db:
 	createdb test_application_data
 	${NODE_BIN}/knex migrate:latest --env test
+	${NODE_BIN}/mocha test/postgres.spec.js
+	dropdb test_application_data
 
 test-all:
 	createdb test_application_data

@@ -38,6 +38,13 @@ const propStringToDate = R.curry( (prop_name, obj) =>
   )(obj)
 )
 
+const dropKeys = R.omit(
+  [ 'id'
+  , 'created_at'
+  , 'updated_at'
+  , 'deleted'
+  , 'deleted_at'
+  ])
 
 describe('Database Retrieval & Manipulation Functions', () => {
 
@@ -60,13 +67,7 @@ describe('Database Retrieval & Manipulation Functions', () => {
     , 'ECB'
     ]
 
-  const dropKeys = R.omit(
-    [ 'id'
-    , 'created_at'
-    , 'updated_at'
-    , 'deleted'
-    , 'deleted_at'
-    ])
+
 
   describe('#saveUserDetails()', () => {
 
