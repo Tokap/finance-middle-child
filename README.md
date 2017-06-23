@@ -103,14 +103,10 @@ API returns results as a JSON array of objects. Example:
 ## Tests:
 
 This application includes thorough testing of API interaction and data manipulation
-functions. All tests should be run using:  `make test-all`
-
-Alternatively, single test files may be run with:
-
-`make test-one test=desired_test_filename`
-(Ex: `make test-one test=twitter`)
-
-Lastly, Database functions can be tested by themselves using:  `make test-db`
+functions. The following options are available:
+- Run all tests -> `make test-all`
+- Run Database tests -> `make test-db`
+- Run a single test -> `make test-one test=desired_test_filename`
 
 ## Additional Configuration:
 
