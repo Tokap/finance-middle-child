@@ -28,8 +28,28 @@ const _knexConfig = {
 
 const Knex = knex(_knexConfig);
 
-// @TODO - some tests failing : timestamp from db is formatted odd on return
+const _makeDate = string => new Date(string)
+
+const propStringToDate = R.curry( (prop_name, obj) =>
+  R.compose(
+    R.assoc(prop_name, R.__, obj)
+  , _makeDate
+  , R.prop(prop_name)
+  )(obj)
+)
+
+
 describe('Database Retrieval & Manipulation Functions', () => {
+
+  const ALL_POSTS = [ Inserts.POST_ONE, Inserts.POST_TWO ]
+
+  const ALL_POSTS_WITH_DATES = R.map(propStringToDate('posted_at'), ALL_POSTS)
+
+  const ALL_PRICES = [ Inserts.STOCK_PRICE_ONE, Inserts.STOCK_PRICE_TWO ]
+
+  const ALL_STOCKS = [ Inserts.STOCK_ONE, Inserts.STOCK_TWO ]
+
+  const SAVED_IDS = [ 1, 2 ]
 
   const CONFIRMED_BLACK_LIST =
     [ 'USD'
@@ -46,61 +66,37 @@ describe('Database Retrieval & Manipulation Functions', () => {
     , 'updated_at'
     , 'deleted'
     , 'deleted_at'
-
-    // , 'posted_at'
-    , 'account_created_at'
     ])
-
-  const _makeDateString = (string) => new Date(string).toString()
-
-  const propStringToDateString = (prop_name, obj) =>
-    R.compose(
-      R.assoc(prop_name, R.__, obj)
-    , _makeDateString
-    , R.prop(prop_name)
-    )(obj)
-
-
-  const propDateToDateString = (prop_name, obj) => {
-    let date = R.prop(prop_name, obj)
-    return R.assoc(prop_name, date.toString(), obj)
-  }
 
   describe('#saveUserDetails()', () => {
 
     it('should return a list of save ids after successful ', () =>
       PgInsert.saveUserDetails(Knex, [ Inserts.USER_ONE, Inserts.USER_TWO ])
-      .then( (save_ids) => Assert.deepEqual([ 1, 2 ], save_ids) )
+      .then( (save_ids) => Assert.deepEqual(SAVED_IDS, save_ids) )
     )
   }),
 
   describe('#savePostDetails()', () => {
 
     it('should return a list of save ids after successful ', () =>
-      PgInsert.savePostDetails(Knex, [ Inserts.POST_ONE, Inserts.POST_TWO ])
-      .then( (save_ids) => Assert.deepEqual([ 1, 2 ], save_ids) )
+      PgInsert.savePostDetails(Knex, ALL_POSTS)
+      .then( (save_ids) => Assert.deepEqual(SAVED_IDS, save_ids) )
     )
   }),
 
   describe('#saveStockTicketDetails()', () => {
 
     it('should return a list of save ids after successful ', () =>
-      PgInsert.saveStockTicketDetails(
-        Knex
-      , [ Inserts.STOCK_ONE, Inserts.STOCK_TWO ]
-      )
-      .then( (save_ids) => Assert.deepEqual([ 1, 2 ], save_ids) )
+      PgInsert.saveStockTicketDetails(Knex, ALL_STOCKS)
+      .then( (save_ids) => Assert.deepEqual(SAVED_IDS, save_ids) )
     )
   }),
 
   describe('#saveStockPriceDetails()', () => {
 
     it('should return a list of save ids after successful ', () =>
-      PgInsert.saveStockPriceDetails(
-        Knex
-      , [ Inserts.STOCK_PRICE_ONE, Inserts.STOCK_PRICE_TWO ]
-      )
-      .then( (save_ids) => Assert.deepEqual([ 1, 2 ], save_ids) )
+      PgInsert.saveStockPriceDetails(Knex, ALL_PRICES)
+      .then( (save_ids) => Assert.deepEqual(SAVED_IDS, save_ids) )
     )
   }),
 
@@ -135,15 +131,15 @@ describe('Database Retrieval & Manipulation Functions', () => {
     let user_with_posts    = 2
     let user_without_posts = 1
 
-    // Posted_at is a Date object. We need to convert it to a datestring & original insert to datestring and tests will pass.
-    // This is to be done so proper comparisons can be made. deepEqual fails otherwise.
-
     it('should return a list containing posts with stock ticket mentions', () =>
       PgGet.getStockTweetsByUserId(Knex, user_with_posts)
-      .tap( (rez) => console.log('TYPE OF DATE: ', rez[0].posted_at.toString() === new Date('2017-06-13 02:56:27').toString() ) )
-      .tap( (rez) => console.log('NEW DATE: ', new Date('2017-06-13 02:56:27').toString() ) )
       .then( R.compose(dropKeys, R.head) )
-      .then( (post_object) => Assert.deepEqual(Inserts.POST_ONE, post_object) )
+      .then( (post_object) =>
+        Assert.deepEqual(
+          propStringToDate('posted_at', Inserts.POST_ONE)
+        , post_object
+        )
+      )
     ),
     it('should return an empty list when no posts found with stock mentions', () =>
     PgGet.getStockTweetsByUserId(Knex, user_without_posts)
@@ -171,16 +167,11 @@ describe('Database Retrieval & Manipulation Functions', () => {
   }),
 
   describe('#getPostDetails()', () => {
-    let _dropPostedAt = R.dissoc('posted_at')
-
-    let all_posts = [ _dropPostedAt(Inserts.POST_ONE), _dropPostedAt(Inserts.POST_TWO) ]
 
     it('should return a list containing all stored twitter posts', () =>
       PgGet.getPostDetails(Knex)
-      .tap( rez => console.log('Here is the rez: ', rez))
       .then( R.map(dropKeys) )
-      .tap( rez => console.log('Here is after dropped keys: ', rez))
-      .then( (post_return) => Assert.deepEqual(all_posts, post_return) )
+      .then( (post_return) => Assert.deepEqual(ALL_POSTS_WITH_DATES, post_return) )
     )
   }),
 
@@ -194,39 +185,41 @@ describe('Database Retrieval & Manipulation Functions', () => {
   }),
 
   describe('#getTwitterUserByUsername()', () => {
+    let user_details = propStringToDate('account_created_at', Inserts.USER_TWO)
 
     it('should return a list containing user details', () =>
       PgGet.getTwitterUserByUsername(Knex, Inserts.USER_TWO.username)
       .then( R.compose(dropKeys, R.head) )
-      .then( (user_return) => Assert.deepEqual(Inserts.USER_TWO, user_return) )
+      .then( (user_return) => Assert.deepEqual(user_details, user_return) )
     )
   }),
 
   describe('#getTwitterUserById()', () => {
+    let user_details = propStringToDate('account_created_at', Inserts.USER_TWO)
 
     it('should return a list containing user details', () =>
       PgGet.getTwitterUserById(Knex, 2)
       .then( R.compose(dropKeys, R.head) )
-      .then( (user_return) => Assert.deepEqual(Inserts.USER_TWO, user_return) )
+      .then( (user_return) => Assert.deepEqual(user_details, user_return) )
     )
   }),
 
   describe('#getTwitterPostById()', () => {
+    let post_details = propStringToDate('posted_at', Inserts.POST_ONE)
 
     it('should return a list containing post details', () =>
       PgGet.getTwitterPostById(Knex, 1)
       .then( R.compose(dropKeys, R.head) )
-      .then( (post_return) => Assert.deepEqual(Inserts.POST_ONE, post_return) )
+      .then( (post_return) => Assert.deepEqual(post_details, post_return) )
     )
   }),
 
   describe('#getTwitterPostsByUserId()', () => {
-    let all_posts = [ Inserts.POST_ONE, Inserts.POST_TWO ]
 
     it('should return a list containing multiple post details', () =>
       PgGet.getTwitterPostsByUserId(Knex, 2)
       .then( R.map(dropKeys) )
-      .then( (post_return) => Assert.deepEqual(all_posts, post_return) )
+      .then( (post_return) => Assert.deepEqual(ALL_POSTS_WITH_DATES, post_return) )
     )
   }),
 
@@ -240,22 +233,20 @@ describe('Database Retrieval & Manipulation Functions', () => {
   }),
 
   describe('#getAllStocks()', () => {
-    let all_stocks = [ Inserts.STOCK_ONE, Inserts.STOCK_TWO ]
 
     it('should return a list containing all stock details', () =>
       PgGet.getAllStocks(Knex)
       .then( R.map(dropKeys) )
-      .then( (stock_return) => Assert.deepEqual(all_stocks, stock_return) )
+      .then( (stock_return) => Assert.deepEqual(ALL_STOCKS, stock_return) )
     )
   }),
 
   describe('#getStockHistoryByStockId()', () => {
-    let all_prices = [ Inserts.STOCK_PRICE_ONE, Inserts.STOCK_PRICE_TWO ]
 
     it('should return a list containing the price history details', () =>
       PgGet.getStockHistoryByStockId(Knex, 1)
       .then( R.map(dropKeys) )
-      .then( (price_return) => Assert.deepEqual(all_prices, price_return) )
+      .then( (price_return) => Assert.deepEqual(ALL_PRICES, price_return) )
     )
   }),
 
