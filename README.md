@@ -110,7 +110,6 @@ functions. All tests should be run using:
 Alternatively, single test files may be run with:
 
 `make test-one test=desired_test_filename`
-
 Ex: `make test-one test=twitter`
 
 Lastly, Database functions can be tested by themselves using:
