@@ -47,5 +47,5 @@ test-all:
 	npm test
 	dropdb test_application_data
 
-run-test:
+test-one:
 	${NODE_BIN}/mocha test/$(test).spec.js
