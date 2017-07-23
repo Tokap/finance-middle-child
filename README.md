@@ -1,4 +1,4 @@
-# js-middle-child
+# financial-middle-child
 **Discover Finance Hints Through Social Media & Stock Data**
 
 This application was written in a functional paradigm with heavy use of the
