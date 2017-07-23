@@ -29,7 +29,7 @@ const _postHasBlackListTerm = R.compose(
 )
 
 // getStockTweetsByUserId :: Number -> List StoredTwitterPost
-const getStockTweetsByUserId = R.curry ( (knex, user_id) =>
+const getStockTweetsByUserId = R.curry( (knex, user_id) =>
   knex.select().from(Tables.twitter_post).where({twitter_user_id: user_id})
   .then(R.filter(Stock.postHasStockTicket))
   .then(R.reject(_postHasBlackListTerm))
