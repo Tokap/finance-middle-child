@@ -3,7 +3,7 @@
 require('dotenv').config()
 
 const R        = require('ramda')
-const Assert = require('assert');
+const Assert = require('assert')
 const knex     = require('knex')
 const PgInsert = require('../src/postgres/insert.js')
 const PgGet    = require('../src/postgres/get.js')
@@ -18,15 +18,15 @@ const _conn = {
 , database: TEST_DB_NAME
 , user: process.env.POSTGRES_USER
 , password: process.env.POSTGRES_PW
-};
+}
 
 const _knexConfig = {
   client: 'pg'
 , version: 9.6
 , connection: _conn
-};
+}
 
-const Knex = knex(_knexConfig);
+const Knex = knex(_knexConfig)
 
 // _makeDate :: String -> Date
 const _makeDate = string => new Date(string)
